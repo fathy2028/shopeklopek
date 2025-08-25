@@ -154,6 +154,89 @@ const HomePage = () => {
         </Slider>
       </div>
 
+      {/* Hero Section with Shop Now Button */}
+      <div className='container mt-5'>
+        <div className='text-center mb-5'>
+          <div className='hero-content' style={{
+            background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255, 165, 0, 0.1))',
+            borderRadius: '25px',
+            padding: '60px 20px',
+            marginBottom: '50px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%234A90E2" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+              animation: 'float 6s ease-in-out infinite'
+            }}></div>
+            <h1 className='display-3 mb-4' style={{
+              fontWeight: '800',
+              background: 'linear-gradient(135deg, #4A90E2, #FF6B6B)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              position: 'relative',
+              zIndex: 2
+            }}>
+              {isRTL ? 'مرحباً بك في متجرنا' : 'Welcome to Our Store'}
+            </h1>
+            <p className='lead mb-4' style={{ 
+              color: '#6c757d', 
+              fontSize: '1.3rem',
+              position: 'relative',
+              zIndex: 2
+            }}>
+              {isRTL ? 'اكتشف مجموعة واسعة من المنتجات عالية الجودة' : 'Discover a wide range of high-quality products'}
+            </p>
+            <button 
+              className='btn btn-primary btn-lg shop-now-btn'
+              onClick={() => navigate('/products')}
+              style={{
+                padding: '18px 40px',
+                fontSize: '1.2rem',
+                fontWeight: '600',
+                borderRadius: '50px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                border: 'none',
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.4)',
+                zIndex: 2
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-5px) scale(1.05)';
+                e.target.style.boxShadow = '0 20px 40px rgba(102, 126, 234, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0) scale(1)';
+                e.target.style.boxShadow = '0 10px 30px rgba(102, 126, 234, 0.4)';
+              }}
+            >
+              <i className="fas fa-shopping-bag me-3"></i>
+              {isRTL ? 'تسوق الآن' : 'Shop Now'}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                transition: 'left 0.6s ease'
+              }}></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Categories Section */}
       <div className='container mt-5'>
         <div className='text-center mb-4'>

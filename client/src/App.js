@@ -21,6 +21,7 @@ import Search from "./pages/Search";
 import ProductDetails from "./pages/ProductDetails";
 import Category from "./pages/Category";
 import CartPage from "./pages/CartPage";
+import AllProducts from "./pages/AllProducts";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import ProfileAdmin from "./pages/admin/ProfileAdmin";
 import AllOrders from "./pages/admin/AllOrders";
@@ -42,6 +43,7 @@ function App() {
     <>
     <Routes>
       <Route path="/" element={<HomePage/>} />
+      <Route path="/products" element={<AllProducts/>} />
       <Route path="/cart" element={<CartPage/>} />
       <Route path="/product/:id" element={<ProductDetails/>} />
       <Route path="/category/:id" element={<Category/>} />
