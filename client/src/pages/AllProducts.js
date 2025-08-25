@@ -20,7 +20,7 @@ const AllProducts = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`${backendUrl}/api/v1/product/get-products`);
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/getall-products`);
       setLoading(false);
       if (data?.success) {
         setProducts(data.products);
