@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const conn = () => {
     // Include the database name 'test' in the connection string
-    mongoose.connect("mongodb+srv://zeyad:zeyad2025@test.3lhioka.mongodb.net/test?retryWrites=true&w=majority&appName=cluster0", {
+    mongoose.connect("mongodb+srv://zeyad:zeyad2025@test.3lhioka.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0", {
     })
     .then(() => {
         console.log("Connected to MongoDB Atlas database: test");
