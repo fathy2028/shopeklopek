@@ -1,0 +1,133 @@
+{
+  "navbar": {
+    "home": "الرئيسية",
+    "categories": "الفئات",
+    "register": "تسجيل",
+    "login": "دخول",
+    "logout": "خروج",
+    "dashboard": "لوحة التحكم",
+    "cart": "السلة"
+  },
+  "homepage": {
+    "title": "الرئيسية - شبيك لبيك",
+    "shopByCategory": "تسوق حسب الفئة",
+    "chooseFromCategories": "اختر من مجموعة واسعة من الفئات",
+    "loading": "جاري التحميل...",
+    "noCategories": "لا توجد فئات متاحة",
+    "deliveryWithin": "التوصيل خلال:",
+    "browseProducts": "تصفح المنتجات",
+    "minutes": "دقيقة",
+    "hours": "ساعة",
+    "days": "يوم",
+    "filterByCategory": "تصفية حسب الفئة",
+    "filterByPrices": "تصفية حسب الأسعار",
+    "resetFilters": "إعادة تعيين المرشحات",
+    "allProducts": "جميع المنتجات",
+    "addToCart": "أضف إلى السلة",
+    "moreDetails": "المزيد من التفاصيل",
+    "loadMore": "تحميل المزيد",
+    "noProducts": "لم يتم العثور على منتجات",
+    "itemAddedToCart": "تم إضافة العنصر إلى السلة بنجاح"
+  },
+
+  "dashboard": {
+    "userPanel": "لوحة المستخدم",
+    "adminPanel": "لوحة الإدارة",
+    "profile": "الملف الشخصي",
+    "orders": "الطلبات",
+    "createCategory": "إنشاء فئة",
+    "createProduct": "إنشاء منتج",
+    "products": "المنتجات",
+    "users": "المستخدمون",
+    "allOrders": "جميع الطلبات",
+    "userName": "اسم المستخدم",
+    "userEmail": "بريد المستخدم الإلكتروني",
+    "adminName": "اسم المدير",
+    "adminEmail": "بريد المدير الإلكتروني"
+  },
+  "product": {
+    "productDetails": "تفاصيل المنتج",
+    "name": "الاسم",
+    "price": "السعر",
+    "description": "الوصف",
+    "category": "الفئة",
+    "quantity": "الكمية",
+    "shipping": "الشحن",
+    "photo": "الصورة",
+    "relatedProducts": "منتجات ذات صلة"
+  },
+  "cart": {
+    "title": "السلة - صيدلية الملكة",
+    "yourCart": "سلتك",
+    "total": "المجموع",
+    "checkout": "الدفع",
+    "removeFromCart": "إزالة من السلة",
+    "emptyCart": "سلتك فارغة",
+    "deliveryInfo": "معلومات التسليم",
+    "expectedDelivery": "التاريخ المتوقع للتسليم",
+    "maxDeliveryDuration": "مدة التسليم القصوى",
+    "categories": "الفئات",
+    "hours": "ساعة"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول - شبيك لبيك",
+      "heading": "تسجيل الدخول الآن",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "forgotPassword": "نسيت كلمة المرور",
+      "submit": "إرسال",
+      "loginSuccess": "تم تسجيل الدخول بنجاح",
+      "loginError": "حدث خطأ ما"
+    },
+    "register": {
+      "title": "التسجيل - صيدلية الملكة",
+      "heading": "سجل الآن",
+      "namePlaceholder": "أدخل اسمك",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "phonePlaceholder": "أدخل رقم هاتفك",
+      "addressPlaceholder": "أدخل عنوانك",
+      "answerPlaceholder": "ما اسم أفضل صديق لك؟ ملاحظة: هذه الإجابة مهمة لاستعادة الحساب",
+      "submit": "إرسال",
+      "registerSuccess": "تم التسجيل بنجاح",
+      "registerError": "حدث خطأ ما"
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور - صيدلية الملكة",
+      "heading": "إعادة تعيين كلمة المرور",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "answerPlaceholder": " (اسم صديقك)أدخل إجابتك",
+      "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+      "submit": "إعادة تعيين كلمة المرور"
+    }
+  },
+  "footer": {
+    "allRightsReserved": "جميع الحقوق محفوظة! © م/ زياد عادل",
+    "contactUs": "اتصل بنا",
+    "aboutUs": "من نحن",
+    "privacyPolicy": "سياسة الخصوصية"
+  },
+  "common": {
+    "welcome": "مرحباً بك في صيدلية الملكة",
+    "search": "بحث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "create": "إنشاء",
+    "submit": "إرسال",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "yes": "نعم",
+    "no": "لا",
+    "ok": "موافق",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "currency": "جنية"
+  }
+}

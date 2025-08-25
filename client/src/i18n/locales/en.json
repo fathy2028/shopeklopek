@@ -1,0 +1,133 @@
+{
+  "navbar": {
+    "home": "Home",
+    "categories": "Categories",
+    "register": "Register",
+    "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "cart": "Cart"
+  },
+  "homepage": {
+    "title": "Home - Shopeklopek",
+    "shopByCategory": "Shop by Category",
+    "chooseFromCategories": "Choose from our wide range of categories",
+    "loading": "Loading...",
+    "noCategories": "No categories available",
+    "deliveryWithin": "Delivery within:",
+    "browseProducts": "Browse Products",
+    "minutes": "minutes",
+    "hours": "hours",
+    "days": "days",
+    "filterByCategory": "Filter by Category",
+    "filterByPrices": "Filter by Prices",
+    "resetFilters": "Reset Filters",
+    "allProducts": "All Products",
+    "addToCart": "Add to Cart",
+    "moreDetails": "More Details",
+    "loadMore": "Load more",
+    "noProducts": "No products found",
+    "itemAddedToCart": "Item added to cart successfully"
+  },
+
+  "dashboard": {
+    "userPanel": "User Panel",
+    "adminPanel": "Admin Panel",
+    "profile": "Profile",
+    "orders": "Orders",
+    "createCategory": "Create Category",
+    "createProduct": "Create Product",
+    "products": "Products",
+    "users": "Users",
+    "allOrders": "All Orders",
+    "userName": "User name",
+    "userEmail": "User email",
+    "adminName": "Admin name",
+    "adminEmail": "Admin email"
+  },
+  "product": {
+    "productDetails": "Product Details",
+    "name": "Name",
+    "price": "Price",
+    "description": "Description",
+    "category": "Category",
+    "quantity": "Quantity",
+    "shipping": "Shipping",
+    "photo": "Photo",
+    "relatedProducts": "Related Products"
+  },
+  "cart": {
+    "title": "Cart - Queen Pharmacy",
+    "yourCart": "Your Cart",
+    "total": "Total",
+    "checkout": "Checkout",
+    "removeFromCart": "Remove from Cart",
+    "emptyCart": "Your cart is empty",
+    "deliveryInfo": "Delivery Information",
+    "expectedDelivery": "Expected Delivery",
+    "maxDeliveryDuration": "Max Delivery Duration",
+    "categories": "Categories",
+    "hours": "hours"
+  },
+  "auth": {
+    "login": {
+      "title": "Login - Queen Pharmacy",
+      "heading": "Login Now",
+      "emailPlaceholder": "Enter Your Email",
+      "passwordPlaceholder": "Enter Your Password",
+      "forgotPassword": "Forgot Password",
+      "submit": "Submit",
+      "loginSuccess": "Login successful",
+      "loginError": "Something went wrong"
+    },
+    "register": {
+      "title": "Register - Queen Pharmacy",
+      "heading": "Register Now",
+      "namePlaceholder": "Enter Your Name",
+      "emailPlaceholder": "Enter Your Email",
+      "passwordPlaceholder": "Enter Your Password",
+      "phonePlaceholder": "Enter Your Phone Number",
+      "addressPlaceholder": "Enter Your Address",
+      "answerPlaceholder": "What is your best friend's name? Note that this answer is important to recover the account",
+      "submit": "Submit",
+      "registerSuccess": "Registration successful",
+      "registerError": "Something went wrong"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password - Queen Pharmacy",
+      "heading": "Reset Your Password",
+      "emailPlaceholder": "Enter Your Email",
+      "answerPlaceholder": "Enter Your best friend name",
+      "newPasswordPlaceholder": "Enter Your New Password",
+      "submit": "Reset Password"
+    }
+  },
+  "footer": {
+    "allRightsReserved": "All Rights Reserved! © Eng/ Zeyad Adel",
+    "contactUs": "Contact Us",
+    "aboutUs": "About Us",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "common": {
+    "welcome": "Welcome to Queen Pharmacy",
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "update": "Update",
+    "create": "Create",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "currency": "EGP"
+  }
+}
