@@ -43,14 +43,32 @@ const CartPage = () => {
         }
     };
 
-    const totalPrice = () => {
+    const deliveryFee = 30; // Delivery fee in EGP
+
+    const getSubtotal = () => {
         try {
             let total = 0;
             cart?.forEach(item => { total += item.price; });
-            return isRTL ? `${total} ${currency}` : `${currency} ${total}`;
+            return total;
         } catch (error) {
             console.log(error);
+            return 0;
         }
+    };
+
+    const getTotalPrice = () => {
+        try {
+            const subtotal = getSubtotal();
+            const total = subtotal + (cart.length > 0 ? deliveryFee : 0);
+            return total;
+        } catch (error) {
+            console.log(error);
+            return 0;
+        }
+    };
+
+    const formatPrice = (price) => {
+        return isRTL ? `${price} ${currency}` : `${currency} ${price}`;
     };
 
     const getProductCount = (id) => {
@@ -120,11 +138,12 @@ const CartPage = () => {
 
     const placeOrder = async () => {
         try {
-            const totalcash = cart.reduce((total, item) => total + item.price, 0);
+            const totalcash = getTotalPrice(); // Include delivery fees in the order total
 
             const { data } = await axios.post(`${backendUrl}/api/v1/order/create`, {
                 products: cart.map(item => item._id),
-                totalcash
+                totalcash,
+                deliveryFee: deliveryFee
             }, {
                 headers: {
                     Authorization: auth.token
@@ -210,10 +229,54 @@ const CartPage = () => {
                         ))}
                     </div>
                     <div className='col-md-4 text-center'>
-                        <h2>{isRTL ? 'ملخص السلة' : 'Cart Summary'}</h2>
-                        <h5>{isRTL ? 'المجموع | الدفع | الطريقة' : 'Total | CheckOut | Payment'}</h5>
-                        <hr />
-                        <h4>{isRTL ? `المجموع: ${totalPrice()}` : `Total: ${totalPrice()}`}</h4>
+                        <div className="cart-summary-card" style={{
+                            background: 'linear-gradient(135deg, #f8f9fa, #e9ecef)',
+                            borderRadius: '20px',
+                            padding: '30px',
+                            boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
+                            border: '1px solid #dee2e6'
+                        }}>
+                            <h2 className="mb-3" style={{
+                                background: 'linear-gradient(135deg, #4A90E2, #FF6B6B)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                                fontWeight: 'bold'
+                            }}>
+                                {isRTL ? 'ملخص السلة' : 'Cart Summary'}
+                            </h2>
+                            <h6 className="text-muted mb-4">
+                                {isRTL ? 'المجموع | الدفع | الطريقة' : 'Total | CheckOut | Payment'}
+                            </h6>
+                            <hr style={{ margin: '20px 0', border: '1px solid #dee2e6' }} />
+                            
+                            {/* Order Summary */}
+                            <div className="order-breakdown mb-4">
+                                {cart.length > 0 && (
+                                    <>
+                                        <div className="d-flex justify-content-between mb-2">
+                                            <span>{isRTL ? 'المجموع الفرعي:' : 'Subtotal:'}</span>
+                                            <span className="fw-bold">{formatPrice(getSubtotal())}</span>
+                                        </div>
+                                        <div className="d-flex justify-content-between mb-2">
+                                            <span>{isRTL ? 'رسوم التوصيل:' : 'Delivery Fee:'}</span>
+                                            <span className="fw-bold text-info">{formatPrice(deliveryFee)}</span>
+                                        </div>
+                                        <hr style={{ margin: '15px 0' }} />
+                                    </>
+                                )}
+                                <div className="d-flex justify-content-between">
+                                    <span className="fs-5 fw-bold">{isRTL ? 'الإجمالي:' : 'Total:'}</span>
+                                    <span className="fs-5 fw-bold" style={{
+                                        background: 'linear-gradient(135deg, #4A90E2, #FF6B6B)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text'
+                                    }}>
+                                        {formatPrice(getTotalPrice())}
+                                    </span>
+                                </div>
+                            </div>
 
                         {/* Delivery Information */}
                         {cart.length > 0 && getDeliveryInfo() && (
@@ -288,13 +351,36 @@ const CartPage = () => {
                                 </div>
                             )
                         }
-                        {
-                            cart.length > 0 && auth?.token && (
-                                <button className='btn btn-success' onClick={placeOrder}>
-                                    {isRTL ? 'تأكيد الطلب' : 'Place Order'}
-                                </button>
-                            )
-                        }
+                            {
+                                cart.length > 0 && auth?.token && (
+                                    <button 
+                                        className='btn btn-success w-100' 
+                                        onClick={placeOrder}
+                                        style={{
+                                            borderRadius: '25px',
+                                            padding: '15px 30px',
+                                            fontSize: '1.1rem',
+                                            fontWeight: '600',
+                                            background: 'linear-gradient(135deg, #28a745, #20c997)',
+                                            border: 'none',
+                                            boxShadow: '0 8px 25px rgba(40, 167, 69, 0.3)',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        onMouseOver={(e) => {
+                                            e.target.style.transform = 'translateY(-2px)';
+                                            e.target.style.boxShadow = '0 12px 35px rgba(40, 167, 69, 0.4)';
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.target.style.transform = 'translateY(0)';
+                                            e.target.style.boxShadow = '0 8px 25px rgba(40, 167, 69, 0.3)';
+                                        }}
+                                    >
+                                        <i className="fas fa-check-circle me-2"></i>
+                                        {isRTL ? 'تأكيد الطلب' : 'Place Order'}
+                                    </button>
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

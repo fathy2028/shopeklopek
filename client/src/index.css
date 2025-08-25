@@ -345,14 +345,36 @@ body {
   font-weight: bold;
 }
 
-/* Advanced Footer Styles */
+/* Advanced Footer Styles with Logo-inspired Colors */
 .advanced-footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
-  color: white;
-  padding: 60px 0 0 0;
+  background: linear-gradient(135deg, #1a365d 0%, #2c5282 25%, #3182ce 50%, #4299e1 75%, #63b3ed 100%);
   position: relative;
   overflow: hidden;
   margin-top: 50px;
+  padding: 0;
+}
+
+.advanced-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      rgba(26, 54, 93, 0.9) 0%,
+      rgba(44, 82, 130, 0.8) 25%,
+      rgba(49, 130, 206, 0.7) 50%,
+      rgba(66, 153, 225, 0.6) 75%,
+      rgba(99, 179, 237, 0.5) 100%);
+  z-index: 1;
+}
+
+.advanced-footer .container {
+  position: relative;
+  z-index: 2;
+  padding: 60px 15px 0;
+  color: white;
 }
 
 .footer-section {
@@ -376,8 +398,9 @@ body {
   left: 0;
   width: 50px;
   height: 3px;
-  background: linear-gradient(135deg, var(--secondary-orange), var(--accent-yellow));
+  background: linear-gradient(135deg, #f6ad55, #fbd38d);
   border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(246, 173, 85, 0.4);
 }
 
 .footer-text {
@@ -406,7 +429,7 @@ body {
 }
 
 .footer-links a:hover {
-  color: var(--secondary-orange);
+  color: #f6ad55;
   transform: translateX(5px);
   padding-left: 10px;
 }
@@ -502,7 +525,7 @@ body {
 
 .contact-item i {
   font-size: 1.1rem;
-  color: var(--secondary-orange);
+  color: #f6ad55;
   width: 20px;
   text-align: center;
 }
@@ -514,7 +537,7 @@ body {
 }
 
 .contact-item a:hover {
-  color: var(--secondary-orange);
+  color: #f6ad55;
 }
 
 /* WhatsApp Contact Buttons */
@@ -578,7 +601,7 @@ body {
 }
 
 .brand-name {
-  color: var(--secondary-orange);
+  color: #f6ad55;
   font-weight: 600;
 }
 
@@ -603,7 +626,7 @@ body {
 }
 
 .payment-methods i:hover {
-  color: var(--secondary-orange);
+  color: #f6ad55;
   transform: translateY(-3px);
 }
 
@@ -623,7 +646,7 @@ body {
   bottom: 0;
   width: 200%;
   height: 100px;
-  background: linear-gradient(90deg, rgba(74, 144, 226, 0.1), rgba(255, 165, 0, 0.1));
+  background: linear-gradient(90deg, rgba(49, 130, 206, 0.2), rgba(246, 173, 85, 0.2));
   border-radius: 50% 50% 0 0;
   animation: wave 10s linear infinite;
 }
@@ -660,6 +683,7 @@ body {
   transform: translateX(-5px);
   padding-right: 10px;
   padding-left: 0;
+  color: #f6ad55;
 }
 
 [dir="rtl"] .footer-links a::before {
