@@ -241,7 +241,7 @@ const HomePage = () => {
               position: 'relative',
               zIndex: 2
             }}>
-              {isRTL ? 'كل طلبات البيت بين اديك' : 'All your home needs at your fingertips'}
+              {isRTL ? 'كل طلبات البيت بين ايديك' : 'All your home needs at your fingertips'}
             </p>
             <button 
               className='btn btn-primary btn-lg shop-now-btn'

@@ -147,12 +147,13 @@ body {
 }
 
 .logo-img {
-  height: 60px;
-  width: 400px;
-  max-width: 500px;
+  height: 80px;          /* increased from 60px */
+  width: 500px;          /* increased from 400px */
+  max-width: 600px;      /* increased from 500px */
   object-fit: contain;
   transition: all 0.3s ease;
 }
+
 
 .logo-img:hover {
   transform: scale(1.05);
