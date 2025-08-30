@@ -95,13 +95,14 @@ const Myfooter = () => {
               <div className='contact-info'>
                 <div className='contact-item'>
                   <i className="fas fa-map-marker-alt"></i>
-                  <span>{isRTL ? 'القاهرة، مصر' : 'Cairo, Egypt'}</span>
+                  <span>{isRTL ? 'التجمع الخامس -القاهره' : 'New Cairo - cairo'}</span>
                 </div>
-                <div className='contact-item'>
-                  <i className="fas fa-envelope"></i>
-                  <a href="mailto:info@shopeklopek.com">info@shopeklopek.com</a>
-                </div>
-                <div className='contact-item whatsapp-contact'>
+<div className='contact-item'>
+  <i className="fab fa-facebook-f"></i>
+  <a href="https://www.facebook.com/shopeklopek" target="_blank" rel="noopener noreferrer">
+    /shopeklopek
+  </a>
+</div>                <div className='contact-item whatsapp-contact'>
                   <i className="fab fa-whatsapp"></i>
                   <button 
                     className='whatsapp-btn'

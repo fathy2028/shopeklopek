@@ -9,19 +9,19 @@ import { useTranslation } from 'react-i18next';
 
 const sliderImages = [
   {
-    url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    url: '/6-.jpg',
     alt: 'Modern Supermarket Interior'
   },
   {
-    url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    url: '/7-.jpg',
     alt: 'Fresh Produce Section'
   },
   {
-    url: 'https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
+    url: '/8-.jpg',
     alt: 'Supermarket Aisles'
   },
   {
-    url: 'https://images.unsplash.com/photo-1601599561213-832382fd07ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    url: '/9-.jpg',
     alt: 'Shopping Cart and Groceries'
   },
   {
@@ -32,7 +32,9 @@ const sliderImages = [
 
 const HomePage = () => {
   const [categories, setCategories] = useState([]);
+  const [bestOffers, setBestOffers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [offersLoading, setOffersLoading] = useState(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const backendUrl =  process.env.BACKEND_URL || "https://shopeklopek-api.vercel.app";
@@ -63,8 +65,6 @@ const HomePage = () => {
       }
     ]
   };
-
-
 
   const getAllCategories = async () => {
     try {
@@ -117,8 +117,48 @@ const HomePage = () => {
     }
   };
 
+  const getBestOffers = async () => {
+    try {
+      setOffersLoading(true);
+      console.log('Fetching best offers from:', `${backendUrl}/api/v1/product/product-list/1`);
+
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/product-list/1`, {
+        timeout: 10000,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      setOffersLoading(false);
+      console.log('Best offers response:', data);
+
+      if (data?.success) {
+        const offersData = data.products || [];
+        setBestOffers(offersData);
+        console.log('Best offers set:', offersData);
+      } else {
+        console.log('Failed to fetch best offers:', data);
+        setBestOffers([]);
+        toast.error(isRTL ? "فشل في جلب أفضل العروض" : "Failed to fetch best offers");
+      }
+    } catch (error) {
+      setOffersLoading(false);
+      console.error('Error fetching best offers:', error);
+      setBestOffers([]);
+
+      if (error.response?.status === 500) {
+        toast.error(isRTL ? "خطأ في الخادم - يرجى المحاولة لاحقاً" : "Server error - please try again later");
+      } else if (error.code === 'ECONNABORTED') {
+        toast.error(isRTL ? "انتهت مهلة الاتصال" : "Connection timeout");
+      } else {
+        toast.error(isRTL ? "خطأ في جلب أفضل العروض" : "Error while fetching best offers");
+      }
+    }
+  };
+
   useEffect(() => {
     getAllCategories();
+    getBestOffers();
   }, []);
 
   // Function to get the URL for category photo
@@ -129,9 +169,22 @@ const HomePage = () => {
     return `${backendUrl}/api/v1/category/get-category-photo/${categoryId}`;
   };
 
+  // Function to get the URL for product photo
+  const getProductPhotoUrl = (productId) => {
+    if (!productId) {
+      return 'https://via.placeholder.com/300x200/4A90E2/FFFFFF?text=No+Image';
+    }
+    return `${backendUrl}/api/v1/product/get-product-photo/${productId}`;
+  };
+
   // Function to handle category click
   const handleCategoryClick = (categoryId) => {
     navigate(`/category/${categoryId}`);
+  };
+
+  // Function to handle product click
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
@@ -183,15 +236,15 @@ const HomePage = () => {
               position: 'relative',
               zIndex: 2
             }}>
-              {isRTL ? 'مرحباً بك في متجرنا' : 'Welcome to Our Store'}
+              {isRTL ? 'مرحباً بك في شبيك لبيك' : 'Welcome to  shopek lopek'}
             </h1>
             <p className='lead mb-4' style={{ 
-              color: '#6c757d', 
+              color: '#eb8a1bff', 
               fontSize: '1.3rem',
               position: 'relative',
               zIndex: 2
             }}>
-              {isRTL ? 'اكتشف مجموعة واسعة من المنتجات عالية الجودة' : 'Discover a wide range of high-quality products'}
+              {isRTL ? 'كل طلبات البيت بين اديك' : 'All your home needs at your fingertips'}
             </p>
             <button 
               className='btn btn-primary btn-lg shop-now-btn'
@@ -302,6 +355,73 @@ const HomePage = () => {
                   <button
                     className='btn btn-primary'
                     onClick={() => getAllCategories()}
+                  >
+                    {isRTL ? 'إعادة المحاولة' : 'Retry'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Best Offers Section */}
+      <div className='container mt-5 best-offers-section'>
+        <div className='text-center mb-4'>
+          <h1 className='display-4'>
+            {isRTL ? 'أفضل العروض' : 'Best Offers'}
+          </h1>
+          <p className='lead text-muted'>
+            {isRTL ? 'اكتشف أحدث المنتجات وأفضل الأسعار' : 'Discover the latest products and best prices'}
+          </p>
+        </div>
+
+        {offersLoading ? (
+          <div className='text-center'>
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">{isRTL ? 'جاري التحميل...' : 'Loading...'}</span>
+            </div>
+          </div>
+        ) : (
+          <div className='product-container'>
+            {bestOffers.length > 0 ? bestOffers.map(product => (
+              <div key={product._id} className='product-card'>
+                <img
+                  src={getProductPhotoUrl(product._id)}
+                  alt={product.name}
+                  className='product-image'
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/300x200/4A90E2/FFFFFF?text=' + encodeURIComponent(product.name);
+                  }}
+                />
+                <div className='product-info'>
+                  <h3 className='product-name'>{product.name}</h3>
+                  <p className='product-description'>
+                    {product.description && product.description.length > 100 
+                      ? `${product.description.substring(0, 100)}...` 
+                      : product.description}
+                  </p>
+                  <p className='product-price'>
+                    ${product.price}
+                  </p>
+                </div>
+                <div className='product-buttons'>
+                  <button 
+                    className='btn btn-primary'
+                    onClick={() => handleProductClick(product._id)}
+                  >
+                    {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                  </button>
+                </div>
+              </div>
+            )) : (
+              <div className='col-12 text-center'>
+                <div className='alert alert-info'>
+                  <h4>{isRTL ? 'لا توجد عروض متاحة' : 'No offers available'}</h4>
+                  <p>{isRTL ? 'لا توجد منتجات متاحة حالياً. يرجى المحاولة مرة أخرى لاحقاً.' : 'No products available currently. Please try again later.'}</p>
+                  <button
+                    className='btn btn-primary'
+                    onClick={() => getBestOffers()}
                   >
                     {isRTL ? 'إعادة المحاولة' : 'Retry'}
                   </button>

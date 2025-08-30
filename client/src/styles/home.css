@@ -591,3 +591,253 @@
     padding: 15px;
   }
 }
+
+/* Best Offers Section Styles */
+.best-offers-section {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.best-offers-section .display-4 {
+  background: linear-gradient(135deg, #4A90E2, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.best-offers-section .lead {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+/* Enhanced Product Container for Best Offers */
+.best-offers-section .product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+  justify-items: center;
+  max-width: 100%;
+}
+
+.best-offers-section .product-card {
+  width: 100%;
+  max-width: 320px;
+  margin: 0;
+  animation: slideInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.best-offers-section .product-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.best-offers-section .product-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.best-offers-section .product-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.best-offers-section .product-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.best-offers-section .product-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.best-offers-section .product-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.best-offers-section .product-card:nth-child(7) {
+  animation-delay: 0.7s;
+}
+
+.best-offers-section .product-card:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
+/* Responsive adjustments for Best Offers */
+@media (max-width: 1200px) {
+  .best-offers-section .product-container {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .best-offers-section .product-container {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .best-offers-section .product-card {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .best-offers-section .product-container {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+  }
+
+  .best-offers-section .product-card {
+    max-width: 280px;
+  }
+
+  .best-offers-section .display-4 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-offers-section .product-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .best-offers-section .product-card {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .best-offers-section .display-4 {
+    font-size: 2rem;
+  }
+
+  .best-offers-section .lead {
+    font-size: 1rem;
+  }
+}
+
+/* Special styling for Best Offers products */
+.best-offers-section .product-card {
+  border: 2px solid transparent;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  position: relative;
+  overflow: hidden;
+}
+
+.best-offers-section .product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(255, 165, 0, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.best-offers-section .product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: #4A90E2;
+}
+
+.best-offers-section .product-card:hover::before {
+  opacity: 1;
+}
+
+.best-offers-section .product-image {
+  height: 200px;
+  transition: transform 0.4s ease;
+}
+
+.best-offers-section .product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.best-offers-section .product-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.best-offers-section .product-description {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.best-offers-section .product-price {
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #4A90E2, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  font-weight: 800;
+}
+
+.best-offers-section .product-buttons .btn {
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.best-offers-section .product-buttons .btn:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Loading spinner for Best Offers */
+.best-offers-section .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #4A90E2;
+}
+
+/* No offers available message styling */
+.best-offers-section .alert-info {
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255, 165, 0, 0.1));
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 15px;
+  padding: 30px;
+  margin: 20px 0;
+}
+
+.best-offers-section .alert-info h4 {
+  color: #4A90E2;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.best-offers-section .alert-info p {
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.best-offers-section .alert-info .btn {
+  background: linear-gradient(135deg, #4A90E2, #FF6B6B);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.best-offers-section .alert-info .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+}

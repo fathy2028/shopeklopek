@@ -148,8 +148,8 @@ body {
 
 .logo-img {
   height: 60px;
-  width: auto;
-  max-width: 200px;
+  width: 400px;
+  max-width: 500px;
   object-fit: contain;
   transition: all 0.3s ease;
 }

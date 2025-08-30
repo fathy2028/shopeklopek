@@ -43,7 +43,7 @@ const CartPage = () => {
         }
     };
 
-    const deliveryFee = 30; // Delivery fee in EGP
+    const deliveryFee = 25; // Delivery fee in EGP
 
     const getSubtotal = () => {
         try {
@@ -183,8 +183,8 @@ const CartPage = () => {
                         <h4 className='text-center'>
                             {cart?.length > 0 ?
                                 (isRTL ?
-                                    `لديك ${cart?.length} عناصر في سلتك ${auth?.token ? "" : "يرجى تسجيل الدخول للدفع"}` :
-                                    `You have ${cart?.length} Items in Your Cart ${auth?.token ? "" : "Please Login to Checkout"}`
+                                    `لديك ${cart?.length} عناصر في سلتك ${auth?.token ? "" : "يرجى تسجيل الدخول لتاكيد الاوردر"}` :
+                                    `You have ${cart?.length} Items in Your Cart ${auth?.token ? "" : "Please Login to confirm the order"}`
                                 ) :
                                 t('cart.emptyCart')
                             }
