@@ -17,11 +17,11 @@ const sliderImages = [
     alt: 'Fresh Produce Section'
   },
   {
-    url: '/8-.jpg',
+    url: '/8.jpg',
     alt: 'Supermarket Aisles'
   },
   {
-    url: '/9-.jpg',
+    url: '/9.jpg',
     alt: 'Shopping Cart and Groceries'
   }
   
