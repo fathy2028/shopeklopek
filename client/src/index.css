@@ -147,9 +147,9 @@ body {
 }
 
 .logo-img {
-  height: 80px;          /* increased from 60px */
-  width: 500px;          /* increased from 400px */
-  max-width: 600px;      /* increased from 500px */
+  height: 200px;          /* increased from 60px */
+  width: 300px;          /* increased from 400px */
+  max-width: 400px;      /* increased from 500px */
   object-fit: contain;
   transition: all 0.3s ease;
 }
