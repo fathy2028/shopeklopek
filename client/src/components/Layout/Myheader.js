@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { GiShoppingBag } from "react-icons/gi";
 import { FaMapMarkerAlt, FaHeadset, FaUser, FaHome } from "react-icons/fa";
@@ -9,13 +9,16 @@ import { useCart } from '../../context/cart';
 import {Badge} from "antd";
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../LanguageSwitcher';
+import axios from 'axios';
 
 const Myheader = () => {
     const [auth, setAuth] = useAuth();
     const [cart] = useCart();
+    const [categories, setCategories] = useState([]);
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const isRTL = i18n.language === 'ar';
+    const backendUrl = process.env.BACKEND_URL || "https://shopeklopek-api.vercel.app";
 
     const handleLogout = () => {
         setAuth({
@@ -35,6 +38,21 @@ const Myheader = () => {
             navigate('/dashboard/user/profile');
         }
     };
+
+    const fetchCategories = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
+            if (data?.success) {
+                setCategories(data.categories || []);
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     return (
         <>
@@ -134,6 +152,28 @@ const Myheader = () => {
                     </div>
                 </div>
             </header>
+
+            {/* Categories Navigation */}
+            {categories.length > 0 && (
+                <nav className="categories-navbar">
+                    <div className="container-fluid">
+                        <div className="category-nav-wrapper">
+                            <ul className="category-nav-list">
+                                {categories.map(category => (
+                                    <li key={category._id} className="category-nav-item">
+                                        <Link 
+                                            to={`/category/${category._id}`}
+                                            className="category-nav-link"
+                                        >
+                                            {category.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            )}
 
         </>
     );
