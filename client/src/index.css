@@ -147,9 +147,12 @@ body {
 }
 
 .logo-img {
-  height: 200px;          /* increased from 60px */
-  width: 300px;          /* increased from 400px */
-  max-width: 400px;      /* increased from 500px */
+  height: 200px;
+  /* increased from 60px */
+  width: 300px;
+  /* increased from 400px */
+  max-width: 400px;
+  /* increased from 500px */
   object-fit: contain;
   transition: all 0.3s ease;
 }
@@ -252,7 +255,7 @@ body {
 .category-nav-link {
   display: block;
   padding: 15px 20px;
-  color: white !important;
+  color: #4A90E2 !important;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9rem;
@@ -265,9 +268,9 @@ body {
 
 .category-nav-link:hover,
 .category-nav-link.active {
-  color: var(--secondary-orange) !important;
+  color: #FFD700 !important;
   background: rgba(255, 255, 255, 0.1);
-  border-bottom-color: var(--secondary-orange);
+  border-bottom-color: #FFD700;
 }
 
 .home-link {
