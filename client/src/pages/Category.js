@@ -153,7 +153,7 @@ const Category = () => {
                             <div className='row'>
                                 {products.length > 0 ? (
                                     products.map(product => (
-                                        <div key={product._id} className='col-lg-3 col-md-4 col-6 mb-4'>
+                                        <div key={product._id} className='col-xl-3 col-lg-4 col-md-6 col-6 mb-4'>
                                             <div className='product-card h-100'>
                                             <img
                                                 src={getProductPhotoUrl(product._id)}
