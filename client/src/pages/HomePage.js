@@ -230,11 +230,9 @@ const HomePage = () => {
                 src="/projectlogo.jpg"
                 alt="Shopeklopek Logo"
                 style={{
-                  maxHeight: '120px',
+                  maxHeight: '300px',
                   width: 'auto',
                   borderRadius: '15px',
-                  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
-                  transition: 'transform 0.3s ease'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.05)';
