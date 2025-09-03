@@ -403,9 +403,10 @@ const HomePage = () => {
             </div>
           </div>
         ) : (
-          <div className='product-container'>
+          <div className='row'>
             {bestOffers.length > 0 ? bestOffers.map(product => (
-              <div key={product._id} className='product-card'>
+              <div key={product._id} className='col-lg-3 col-md-4 col-6 mb-4'>
+                <div className='product-card h-100'>
                 <img
                   src={getProductPhotoUrl(product._id)}
                   alt={product.name}
@@ -432,6 +433,7 @@ const HomePage = () => {
                   >
                     {isRTL ? 'عرض التفاصيل' : 'View Details'}
                   </button>
+                </div>
                 </div>
               </div>
             )) : (

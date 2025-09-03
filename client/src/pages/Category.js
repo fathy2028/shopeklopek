@@ -11,6 +11,7 @@ const Category = () => {
     const { id } = useParams(); // Get category ID from the URL
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState({});
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useCart();
     const navigate = useNavigate();
@@ -50,7 +51,19 @@ const Category = () => {
         }
     };
 
+    const fetchAllCategories = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
+            if (data?.success) {
+                setCategories(data.categories);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
+        fetchAllCategories();
         if (id) {
             fetchCategoryDetails();
             fetchProductsByCategory();
@@ -76,6 +89,40 @@ const Category = () => {
                                     isRTL ? 'منتجات الفئة' : 'Category Products'
                                 )}
                             </h1>
+                            
+                            {/* Category Navigation */}
+                            {categories.length > 0 && (
+                                <div className="mb-4">
+                                    <div className="dropdown d-inline-block">
+                                        <button 
+                                            className="btn btn-outline-primary dropdown-toggle" 
+                                            type="button" 
+                                            data-bs-toggle="dropdown"
+                                            style={{ borderRadius: '25px', padding: '10px 20px' }}
+                                        >
+                                            <i className="fas fa-list me-2"></i>
+                                            {isRTL ? 'تصفح الفئات الأخرى' : 'Browse Other Categories'}
+                                        </button>
+                                        <ul className="dropdown-menu" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {categories.map(cat => (
+                                                <li key={cat._id}>
+                                                    <button 
+                                                        className={`dropdown-item ${cat._id === id ? 'active' : ''}`}
+                                                        onClick={() => navigate(`/category/${cat._id}`)}
+                                                        style={{ 
+                                                            fontWeight: cat._id === id ? 'bold' : 'normal',
+                                                            backgroundColor: cat._id === id ? '#e3f2fd' : 'transparent'
+                                                        }}
+                                                    >
+                                                        {cat.name}
+                                                        {cat._id === id && <i className="fas fa-check ms-2 text-success"></i>}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
                             {category.deliveryDuration && (
                                 <p className='lead text-muted'>
                                     {isRTL ? 'التوصيل خلال: ' : 'Delivery within: '}

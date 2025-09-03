@@ -147,12 +147,6 @@ const AllProducts = () => {
                         <i className="fas fa-shopping-cart me-2"></i>
                         {isRTL ? "أضف للسلة" : "Add to Cart"}
                       </button>
-                      <button
-                        className="btn btn-outline-primary"
-                        onClick={() => navigate(`/product/${product._id}`)}
-                      >
-                        <i className="fas fa-eye"></i>
-                      </button>
                     </div>
                   </div>
                   </div>

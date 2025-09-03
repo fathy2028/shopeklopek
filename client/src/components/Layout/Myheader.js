@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { GiShoppingBag } from "react-icons/gi";
-import { FaMapMarkerAlt, FaHeadset, FaUser } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHeadset, FaUser, FaHome } from "react-icons/fa";
 import { useAuth } from '../../context/auth';
 import toast from "react-hot-toast";
 import SearchInput from '../Form/SearchInput';
@@ -103,6 +103,12 @@ const Myheader = () => {
                         </div>
                         <div className="col-lg-3 col-md-4">
                             <div className="header-actions">
+                                <Link to="/" className="action-btn home-btn">
+                                    <FaHome className="action-icon" />
+                                    <span className="action-text">
+                                        {isRTL ? 'الرئيسية' : 'Home'}
+                                    </span>
+                                </Link>
                                 <button className="action-btn location-btn" onClick={handleLocationClick}>
                                     <FaMapMarkerAlt className="action-icon" />
                                     <span className="action-text">
