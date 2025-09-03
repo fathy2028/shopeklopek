@@ -224,6 +224,29 @@ const HomePage = () => {
               background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%234A90E2" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
               animation: 'float 6s ease-in-out infinite'
             }}></div>
+            {/* Logo */}
+            <div className="mb-4" style={{ position: 'relative', zIndex: 2 }}>
+              <img
+                src="/projectlogo.jpg"
+                alt="Shopeklopek Logo"
+                style={{
+                  maxHeight: '120px',
+                  width: 'auto',
+                  borderRadius: '15px',
+                  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                  transition: 'transform 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'scale(1)';
+                }}
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/200x120/4A90E2/FFFFFF?text=Logo';
+                }}
+              />
+            </div>
             <h1 className='display-3 mb-4' style={{
               fontWeight: '800',
               background: 'linear-gradient(135deg, #4A90E2, #FF6B6B)',

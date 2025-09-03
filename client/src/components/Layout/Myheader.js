@@ -96,16 +96,7 @@ const Myheader = () => {
             <header className="main-header">
                 <div className="container-fluid">
                     <div className="row align-items-center">
-                        <div className="col-lg-3 col-md-4">
-                            <Link to="/" className="header-logo">
-                                <img
-                                    src="/projectlogo.jpg"
-                                    alt="Shopeklopek Logo"
-                                    className="logo-img"
-                                />
-                            </Link>
-                        </div>
-                        <div className="col-lg-6 col-md-4">
+                        <div className="col-lg-9 col-md-8">
                             <div className="header-search">
                                 <SearchInput />
                             </div>
