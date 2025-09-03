@@ -103,9 +103,10 @@ const AllProducts = () => {
             </div>
 
             {/* Products Grid */}
-            <div className="product-container">
+            <div className="row">
               {products.length > 0 ? products.map(product => (
-                <div key={product._id} className="product-card">
+                <div key={product._id} className="col-lg-3 col-md-4 col-6 mb-4">
+                  <div className="product-card h-100">
                   <div className="product-image-container">
                     <img
                       src={getProductPhotoUrl(product._id)}
@@ -153,6 +154,7 @@ const AllProducts = () => {
                         <i className="fas fa-eye"></i>
                       </button>
                     </div>
+                  </div>
                   </div>
                 </div>
               )) : (

@@ -330,7 +330,7 @@ const HomePage = () => {
         ) : (
           <div className='row'>
             {categories.length > 0 ? categories.map(category => (
-              <div key={category._id} className='col-lg-3 col-md-4 col-sm-6 mb-4'>
+              <div key={category._id} className='col-lg-3 col-md-4 col-6 mb-4'>
                 <div
                   className='category-card h-100'
                   onClick={() => handleCategoryClick(category._id)}

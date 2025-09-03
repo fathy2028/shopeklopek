@@ -26,9 +26,10 @@ const Search = () => {
                 <div className='text-center'>
                     <h1>Search Result</h1>
                     <h6>{`Found ${values?.results.length} product(s)`}</h6>
-                    <div className='product-container mt-4'>
+                    <div className='row mt-4'>
                         {values?.results.length > 0 ? values?.results.map(product => (
-                            <div key={product._id} className='product-card'>
+                            <div key={product._id} className='col-lg-3 col-md-4 col-6 mb-4'>
+                                <div className='product-card h-100'>
                                 <img 
                                     style={{ objectFit: "cover" }} 
                                     src={getProductPhotoUrl(product._id)} 
@@ -65,8 +66,9 @@ const Search = () => {
                                         Add to Cart
                                     </button>
                                 </div>
+                                </div>
                             </div>
-                        )) : <p>No products found</p>}
+                        )) : <div className="col-12"><p>No products found</p></div>}
                     </div>
                 </div>
             </div>
