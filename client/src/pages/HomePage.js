@@ -225,14 +225,16 @@ const HomePage = () => {
               animation: 'float 6s ease-in-out infinite'
             }}></div>
             {/* Logo */}
-            <div className="mb-4" style={{ position: 'relative', zIndex: 2 }}>
+            <div className="mb-4 d-flex justify-content-center" style={{ position: 'relative', zIndex: 2 }}>
               <img
                 src="/projectlogo.jpg"
                 alt="Shopeklopek Logo"
+                className="img-fluid"
                 style={{
                   maxHeight: '300px',
                   width: 'auto',
                   borderRadius: '15px',
+                  transition: 'transform 0.3s ease'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.05)';
