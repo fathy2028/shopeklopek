@@ -57,7 +57,7 @@
     "relatedProducts": "منتجات ذات صلة"
   },
   "cart": {
-    "title": "السلة - صيدلية الملكة",
+    "title": "السلة - شبيك لبيك",
     "yourCart": "سلتك",
     "total": "المجموع",
     "checkout": "الدفع",
@@ -81,7 +81,7 @@
       "loginError": "حدث خطأ ما"
     },
     "register": {
-      "title": "التسجيل - صيدلية الملكة",
+      "title": "التسجيل - شبيك لبيك",
       "heading": "سجل الآن",
       "namePlaceholder": "أدخل اسمك",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
@@ -94,7 +94,7 @@
       "registerError": "حدث خطأ ما"
     },
     "forgotPassword": {
-      "title": "نسيت كلمة المرور - صيدلية الملكة",
+      "title": "نسيت كلمة المرور - شبيك لبيك",
       "heading": "إعادة تعيين كلمة المرور",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
       "answerPlaceholder": " (اسم صديقك)أدخل إجابتك",
