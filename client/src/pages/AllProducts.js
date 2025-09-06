@@ -132,7 +132,7 @@ const AllProducts = () => {
                     </p>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <h6 className="product-price mb-0">
-                        {isRTL ? `${product.price} جنيه` : `$${product.price}`}
+                        {isRTL ? `${product.price} جنيه` : `EGP${product.price}`}
                       </h6>
                       <span className="badge bg-success">
                         {isRTL ? "متوفر" : "In Stock"}

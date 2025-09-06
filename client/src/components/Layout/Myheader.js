@@ -63,7 +63,7 @@ const Myheader = () => {
                         <div className="col-md-6">
                             <div className="top-header-left">
                                 <span className="welcome-text">
-                                    {isRTL ? 'مرحباً بكم في شبيك لبيك' : 'Welcome to shopek lopek'}
+                                    {isRTL ? 'مرحباً بكم في شبيك لبيك' : 'Welcome to shopaik lopaik'}
                                 </span>
                             </div>
                         </div>

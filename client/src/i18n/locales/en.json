@@ -9,7 +9,7 @@
     "cart": "Cart"
   },
   "homepage": {
-    "title": "Home - Shopeklopek",
+    "title": "Home - shopaik lopaik",
     "shopByCategory": "Shop by Category",
     "chooseFromCategories": "Choose from our wide range of categories",
     "loading": "Loading...",
@@ -57,7 +57,7 @@
     "relatedProducts": "Related Products"
   },
   "cart": {
-    "title": "Cart - Queen Pharmacy",
+    "title": "Cart - shopaik lopaik",
     "yourCart": "Your Cart",
     "total": "Total",
     "checkout": "Checkout",
@@ -71,7 +71,7 @@
   },
   "auth": {
     "login": {
-      "title": "Login - Queen Pharmacy",
+      "title": "Login - shopaik lopaik",
       "heading": "Login Now",
       "emailPlaceholder": "Enter Your Email",
       "passwordPlaceholder": "Enter Your Password",
@@ -81,7 +81,7 @@
       "loginError": "Something went wrong"
     },
     "register": {
-      "title": "Register - Queen Pharmacy",
+      "title": "Register - shopaik lopaik",
       "heading": "Register Now",
       "namePlaceholder": "Enter Your Name",
       "emailPlaceholder": "Enter Your Email",
@@ -94,7 +94,7 @@
       "registerError": "Something went wrong"
     },
     "forgotPassword": {
-      "title": "Forgot Password - Queen Pharmacy",
+      "title": "Forgot Password - shopaik lopaik",
       "heading": "Reset Your Password",
       "emailPlaceholder": "Enter Your Email",
       "answerPlaceholder": "Enter Your best friend name",
@@ -109,7 +109,7 @@
     "privacyPolicy": "Privacy Policy"
   },
   "common": {
-    "welcome": "Welcome to Queen Pharmacy",
+    "welcome": "Welcome to shopaik lopaik",
     "search": "Search",
     "save": "Save",
     "cancel": "Cancel",

@@ -260,7 +260,7 @@ const HomePage = () => {
               position: 'relative',
               zIndex: 2
             }}>
-              {isRTL ? 'مرحباً بك في شبيك لبيك' : 'Welcome to  shopek lopek'}
+              {isRTL ? 'مرحباً بك في شبيك لبيك' : 'Welcome to  shopaik lopaik'}
             </h1>
             <p className='lead mb-4' style={{ 
               color: '#eb8a1bff', 
@@ -268,7 +268,7 @@ const HomePage = () => {
               position: 'relative',
               zIndex: 2
             }}>
-              {isRTL ? 'كل طلبات البيت بين ايديك' : 'All your home needs at your fingertips'}
+              {isRTL ? 'كل احتياجات البيت بين إيديك' : 'All your home needs at your fingertips'}
             </p>
             <button 
               className='btn btn-primary btn-lg shop-now-btn'
@@ -430,7 +430,7 @@ const HomePage = () => {
                       : product.description}
                   </p>
                   <p className='product-price'>
-                    ${product.price}
+                    EGP{product.price}
                   </p>
                 </div>
                 <div className='product-buttons'>

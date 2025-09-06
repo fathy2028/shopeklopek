@@ -113,7 +113,7 @@ const Myfooter = () => {
                   <div className='contact-item'>
                     <i className="fab fa-facebook-f"></i>
                     <a href="https://www.facebook.com/shopeklopek" target="_blank" rel="noopener noreferrer">
-                      /shopeklopek
+                      /shopaiklopaik
                     </a>
                   </div>
                   <div className='contact-item whatsapp-contact'>
@@ -154,7 +154,7 @@ const Myfooter = () => {
             <div className='col-md-6'>
               <p className='copyright-text'>
                 © 2024 {isRTL ? 'جميع الحقوق محفوظة' : 'All Rights Reserved'} - 
-                <span className='brand-name'> ShopEklopek</span>
+                <span className='brand-name'> Shopaik lopaik</span>
               </p>
             </div>
             <div className='col-md-6'>

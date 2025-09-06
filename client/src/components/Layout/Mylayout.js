@@ -24,9 +24,9 @@ const Mylayout = ({children,title,description,keywords,author}) => {
   )  
 }
 Mylayout.defaultProps={
-  title:"Cloud Pharmacy",
-  description:"Pharmacy",
-  keywords:"pharmacy web app",
+  title:"shopaik lopaik",
+  description:"market",
+  keywords:"market web app",
   author:"Fathy Nassef"
 }
 export default Mylayout
