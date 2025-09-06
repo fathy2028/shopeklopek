@@ -349,13 +349,25 @@ body {
   font-weight: bold;
 }
 
-/* Advanced Footer Styles with Logo-inspired Colors */
-.advanced-footer {
-  background: linear-gradient(135deg, #1a365d 0%, #2c5282 25%, #3182ce 50%, #4299e1 75%, #63b3ed 100%);
+/* Modern Footer Styles with Blue and Yellow Theme */
+.modern-footer {
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 25%, #2E5BBA 50%, #1E3A8A 75%, #1E40AF 100%);
   position: relative;
   overflow: hidden;
   margin-top: 50px;
   padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-main {
+  flex: 1;
+  padding: 60px 0 40px 0;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.95) 0%, rgba(53, 122, 189, 0.95) 25%, rgba(46, 91, 186, 0.95) 50%, rgba(30, 58, 138, 0.95) 75%, rgba(30, 64, 175, 0.95) 100%);
+  position: relative;
+  z-index: 2;
 }
 
 .advanced-footer::before {
@@ -385,33 +397,38 @@ body {
   margin-bottom: 30px;
 }
 
+.footer-title-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title-line {
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  margin-right: 15px;
+}
+
 .footer-title {
   color: #fff;
   font-size: 1.3rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin: 0;
   position: relative;
   display: flex;
   align-items: center;
-}
-
-.footer-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(135deg, #f6ad55, #fbd38d);
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(246, 173, 85, 0.4);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .footer-text {
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
   margin-bottom: 20px;
   font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .footer-links {
@@ -424,18 +441,20 @@ body {
 }
 
 .footer-links a {
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   display: inline-block;
   position: relative;
+  padding: 5px 0;
 }
 
 .footer-links a:hover {
-  color: #f6ad55;
+  color: #FFD700;
   transform: translateX(5px);
   padding-left: 10px;
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 .footer-links a::before {
@@ -445,6 +464,7 @@ body {
   opacity: 0;
   transition: all 0.3s ease;
   font-size: 0.7rem;
+  color: #FFD700;
 }
 
 .footer-links a:hover::before {
@@ -488,7 +508,7 @@ body {
 }
 
 .social-link.facebook::before {
-  background: #3b5998;
+  background: linear-gradient(135deg, #3b5998, #FFD700);
 }
 
 .social-link.instagram::before {
@@ -496,11 +516,11 @@ body {
 }
 
 .social-link.twitter::before {
-  background: #1da1f2;
+  background: linear-gradient(135deg, #1da1f2, #FFD700);
 }
 
 .social-link.youtube::before {
-  background: #ff0000;
+  background: linear-gradient(135deg, #ff0000, #FFD700);
 }
 
 .social-link:hover {
@@ -523,25 +543,28 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
 .contact-item i {
   font-size: 1.1rem;
-  color: #f6ad55;
+  color: #FFD700;
   width: 20px;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 .contact-item a {
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .contact-item a:hover {
-  color: #f6ad55;
+  color: #FFD700;
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 /* WhatsApp Contact Buttons */
@@ -552,7 +575,7 @@ body {
 .whatsapp-btn {
   background: none;
   border: none;
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -569,7 +592,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #25d366, #128c7e);
+  background: linear-gradient(135deg, #25d366, #FFD700);
   transform: scale(0);
   border-radius: 20px;
   transition: transform 0.3s ease;
@@ -579,6 +602,7 @@ body {
 .whatsapp-btn:hover {
   color: white;
   transform: translateX(5px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .whatsapp-btn:hover::before {
@@ -586,27 +610,30 @@ body {
 }
 
 .whatsapp-contact i {
-  color: #25d366 !important;
+  color: #FFD700 !important;
   animation: pulse 2s infinite;
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 /* Footer Bottom */
 .footer-bottom {
-  background: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(30, 64, 175, 0.9));
   padding: 25px 0;
-  margin-top: 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid #FFD700;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .copyright-text {
   margin: 0;
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .brand-name {
-  color: #f6ad55;
+  color: #FFD700;
   font-weight: 600;
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 .payment-methods {
@@ -618,20 +645,23 @@ body {
 }
 
 .payment-text {
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   margin-right: 10px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .payment-methods i {
   font-size: 1.8rem;
-  color: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
+  margin: 0 5px;
 }
 
 .payment-methods i:hover {
-  color: #f6ad55;
+  color: #FFD700;
   transform: translateY(-3px);
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 /* Background Animation Waves */
@@ -650,7 +680,7 @@ body {
   bottom: 0;
   width: 200%;
   height: 100px;
-  background: linear-gradient(90deg, rgba(49, 130, 206, 0.2), rgba(246, 173, 85, 0.2));
+  background: linear-gradient(90deg, rgba(74, 144, 226, 0.2), rgba(255, 215, 0, 0.2));
   border-radius: 50% 50% 0 0;
   animation: wave 10s linear infinite;
 }
