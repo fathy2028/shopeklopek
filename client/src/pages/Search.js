@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Mylayout from '../components/Layout/Mylayout';
 import { useSearch } from '../context/search';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,11 @@ const Search = () => {
     const getProductPhotoUrl = (productId) => {
         return `${backendUrl}/api/v1/product/get-product-photo/${productId}`;
     };
+
+    useEffect(() => {
+        // Scroll to top when component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Mylayout title={"Search - Queen Pharmacy"}>

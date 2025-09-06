@@ -176,11 +176,15 @@ const HomePage = () => {
 
   // Function to handle category click
   const handleCategoryClick = (categoryId) => {
+    // Scroll to top before navigation
+    window.scrollTo(0, 0);
     navigate(`/category/${categoryId}`);
   };
 
   // Function to handle product click
   const handleProductClick = (productId) => {
+    // Scroll to top before navigation
+    window.scrollTo(0, 0);
     navigate(`/product/${productId}`);
   };
 
@@ -268,7 +272,10 @@ const HomePage = () => {
             </p>
             <button 
               className='btn btn-primary btn-lg shop-now-btn'
-              onClick={() => navigate('/products')}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                navigate('/products');
+              }}
               style={{
                 padding: '18px 40px',
                 fontSize: '1.2rem',

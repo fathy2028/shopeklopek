@@ -63,6 +63,9 @@ const Category = () => {
     };
 
     useEffect(() => {
+        // Scroll to top when component mounts or category changes
+        window.scrollTo(0, 0);
+        
         fetchAllCategories();
         if (id) {
             fetchCategoryDetails();

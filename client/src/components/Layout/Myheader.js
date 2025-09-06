@@ -146,6 +146,7 @@ const Myheader = () => {
                                                     <Link 
                                                         to={`/category/${category._id}`}
                                                         className="dropdown-item category-dropdown-item"
+                                                        onClick={() => window.scrollTo(0, 0)}
                                                     >
                                                         {category.name}
                                                     </Link>
