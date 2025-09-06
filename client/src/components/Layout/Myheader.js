@@ -86,7 +86,7 @@ const Myheader = () => {
                                         <div className="dropdown">
                                             <button className="user-dropdown-btn" data-bs-toggle="dropdown">
                                                 <FaUser className="me-1" />
-                                                {auth?.user?.name}
+                                                <span className="user-name-text">{auth?.user?.name}</span>
                                                 <i className="fas fa-chevron-down ms-1"></i>
                                             </button>
                                             <ul className="dropdown-menu">
