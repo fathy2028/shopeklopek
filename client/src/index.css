@@ -883,6 +883,88 @@ body {
   color: var(--primary-blue) !important;
 }
 
+/* Categories Dropdown Styling */
+.categories-dropdown {
+  position: relative;
+}
+
+.categories-dropdown-menu {
+  min-width: 250px !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  border-radius: 15px !important;
+  border: 2px solid var(--primary-blue) !important;
+  box-shadow: 0 15px 35px rgba(74, 144, 226, 0.2) !important;
+  padding: 15px 0 !important;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+  animation: slideDown 0.3s ease-out !important;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-dropdown-item {
+  padding: 12px 20px !important;
+  font-weight: 500 !important;
+  color: var(--text-dark) !important;
+  border-bottom: 1px solid rgba(74, 144, 226, 0.1) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.category-dropdown-item:last-child {
+  border-bottom: none !important;
+}
+
+.category-dropdown-item:hover {
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255, 165, 0, 0.1)) !important;
+  color: var(--primary-blue) !important;
+  transform: translateX(5px) !important;
+  border-left: 4px solid var(--primary-blue) !important;
+}
+
+.category-dropdown-item::before {
+  content: '▶' !important;
+  margin-left: 8px !important;
+  opacity: 0 !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.8rem !important;
+  color: var(--primary-blue) !important;
+}
+
+.category-dropdown-item:hover::before {
+  opacity: 1 !important;
+  transform: translateX(3px) !important;
+}
+
+/* RTL Support for Categories Dropdown */
+[dir="rtl"] .category-dropdown-item:hover {
+  transform: translateX(-5px) !important;
+  border-left: none !important;
+  border-right: 4px solid var(--primary-blue) !important;
+}
+
+[dir="rtl"] .category-dropdown-item::before {
+  content: '◀' !important;
+  margin-right: 8px !important;
+  margin-left: 0 !important;
+}
+
+[dir="rtl"] .category-dropdown-item:hover::before {
+  transform: translateX(-3px) !important;
+}
+
 /* Badge Enhancements */
 .ant-badge-count {
   background: var(--gradient-secondary) !important;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { GiShoppingBag } from "react-icons/gi";
-import { FaMapMarkerAlt, FaHeadset, FaUser, FaHome } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHeadset, FaUser, FaHome, FaList } from "react-icons/fa";
 import { useAuth } from '../../context/auth';
 import toast from "react-hot-toast";
 import SearchInput from '../Form/SearchInput';
@@ -127,6 +127,33 @@ const Myheader = () => {
                                         {isRTL ? 'الرئيسية' : 'Home'}
                                     </span>
                                 </Link>
+                                {categories.length > 0 && (
+                                    <div className="dropdown categories-dropdown">
+                                        <button 
+                                            className="action-btn categories-btn" 
+                                            type="button" 
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            <FaList className="action-icon" />
+                                            <span className="action-text">
+                                                {isRTL ? 'الفئات' : 'Categories'}
+                                            </span>
+                                        </button>
+                                        <ul className="dropdown-menu categories-dropdown-menu">
+                                            {categories.map(category => (
+                                                <li key={category._id}>
+                                                    <Link 
+                                                        to={`/category/${category._id}`}
+                                                        className="dropdown-item category-dropdown-item"
+                                                    >
+                                                        {category.name}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <button className="action-btn location-btn" onClick={handleLocationClick}>
                                     <FaMapMarkerAlt className="action-icon" />
                                     <span className="action-text">
@@ -153,27 +180,6 @@ const Myheader = () => {
                 </div>
             </header>
 
-            {/* Categories Navigation */}
-            {categories.length > 0 && (
-                <nav className="categories-navbar">
-                    <div className="container-fluid">
-                        <div className="category-nav-wrapper">
-                            <ul className="category-nav-list">
-                                {categories.map(category => (
-                                    <li key={category._id} className="category-nav-item">
-                                        <Link 
-                                            to={`/category/${category._id}`}
-                                            className="category-nav-link"
-                                        >
-                                            {category.name}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            )}
 
         </>
     );
