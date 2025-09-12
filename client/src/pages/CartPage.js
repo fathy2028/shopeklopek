@@ -25,6 +25,50 @@ const CartPage = () => {
         toast.success(isRTL ? "تم إضافة العنصر إلى السلة بنجاح" : "Item added to cart successfully");
     };
 
+    // Quantity options for dropdown
+    const getQuantityOptions = () => {
+        return [
+            { value: 0.25, label: isRTL ? 'ربع كيلو' : '0.25 kg' },
+            { value: 0.5, label: isRTL ? 'نصف كيلو' : '0.5 kg' },
+            { value: 0.75, label: isRTL ? 'ثلاثة أرباع كيلو' : '0.75 kg' },
+            { value: 1, label: isRTL ? 'كيلو واحد' : '1 kg' },
+            { value: 1.25, label: isRTL ? 'كيلو وربع' : '1.25 kg' },
+            { value: 1.5, label: isRTL ? 'كيلو ونصف' : '1.5 kg' },
+            { value: 1.75, label: isRTL ? 'كيلو وثلاثة أرباع' : '1.75 kg' },
+            { value: 2, label: isRTL ? 'كيلو' : '2 kg' },
+            { value: 2.5, label: isRTL ? 'كيلو ونصف' : '2.5 kg' },
+            { value: 3, label: isRTL ? 'كيلو' : '3 kg' },
+            { value: 4, label: isRTL ? 'كيلو' : '4 kg' },
+            { value: 5, label: isRTL ? 'كيلو' : '5 kg' }
+        ];
+    };
+
+    // Update product quantity in cart
+    const updateProductQuantity = (productId, newQuantity) => {
+        try {
+            // Find the product in cart
+            const productIndex = cart.findIndex(item => item._id === productId);
+            
+            if (productIndex === -1) {
+                console.error('Product not found in cart');
+                return;
+            }
+
+            // Create new cart with updated quantity
+            let newCart = [...cart];
+            newCart[productIndex] = {
+                ...newCart[productIndex],
+                quantity: newQuantity
+            };
+
+            setCart(newCart);
+            localStorage.setItem("cart", JSON.stringify(newCart));
+            toast.success(isRTL ? "تم تحديث الكمية بنجاح" : "Quantity updated successfully");
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+        }
+    };
+
     const removeCartItem = (id) => {
         try {
             let newCart = [...cart];
@@ -48,8 +92,11 @@ const CartPage = () => {
     const getSubtotal = () => {
         try {
             let total = 0;
-            cart?.forEach(item => { total += item.price; });
-            return total;
+            cart?.forEach(item => { 
+                const quantity = item.quantity || 1;
+                total += item.price * quantity; 
+            });
+            return Math.round(total * 100) / 100; // Round to 2 decimal places
         } catch (error) {
             console.log(error);
             return 0;
@@ -60,7 +107,7 @@ const CartPage = () => {
         try {
             const subtotal = getSubtotal();
             const total = subtotal + (cart.length > 0 ? deliveryFee : 0);
-            return total;
+            return Math.round(total * 100) / 100; // Round to 2 decimal places
         } catch (error) {
             console.log(error);
             return 0;
@@ -72,7 +119,15 @@ const CartPage = () => {
     };
 
     const getProductCount = (id) => {
-        return cart.filter(item => item._id === id).length;
+        const product = cart.find(item => item._id === id);
+        return product ? (product.quantity || 1) : 1;
+    };
+
+    // Calculate total price for a specific product (price * quantity)
+    const getItemTotalPrice = (product) => {
+        const quantity = product.quantity || 1;
+        const total = parseFloat(product.price) * parseFloat(quantity);
+        return Math.round(total * 100) / 100;
     };
 
     const uniqueProducts = [...new Map(cart.map(item => [item._id, item])).values()];
@@ -201,8 +256,8 @@ const CartPage = () => {
                         <h4 className='text-center'>
                             {cart?.length > 0 ?
                                 (isRTL ?
-                                    `لديك ${cart?.length} عناصر في سلتك ${auth?.token ? "" : "يرجى تسجيل الدخول لتاكيد الاوردر"}` :
-                                    `You have ${cart?.length} Items in Your Cart ${auth?.token ? "" : "Please Login to confirm the order"}`
+                                    `لديك ${cart?.length} منتج في سلتك ${auth?.token ? "" : "يرجى تسجيل الدخول لتاكيد الاوردر"}` :
+                                    `You have ${cart?.length} Products in Your Cart ${auth?.token ? "" : "Please Login to confirm the order"}`
                                 ) :
                                 t('cart.emptyCart')
                             }
@@ -226,20 +281,57 @@ const CartPage = () => {
                                 <div className='col-md-8'>
                                     <h4>{p.name}</h4>
                                     <p>{p.description.substring(0, 30)}</p>
-                                    <h3>
-                                      {isRTL ? (
-                                        <><b>{p.price}</b> {currency}</>
-                                      ) : (
-                                        <><b>{currency}</b> {p.price}</>
-                                      )}
-                                    </h3>
-                                    <p>{isRTL ? `الكمية: ${getProductCount(p._id)}` : `Quantity: ${getProductCount(p._id)}`}</p>
+                                    <div className="mb-2">
+                                        <h5 className="text-muted mb-1">
+                                            {isRTL ? 'سعر الوحدة:' : 'Unit Price:'} {formatPrice(p.price)}
+                                        </h5>
+                                        <h3 className="text-primary">
+                                            {isRTL ? (
+                                                <><b>{getItemTotalPrice(p)}</b> {currency}</>
+                                            ) : (
+                                                <><b>{currency}</b> {getItemTotalPrice(p)}</>
+                                            )}
+                                        </h3>
+                                        <small className="text-muted">
+                                            {isRTL ? 
+                                                `(${p.quantity || 1} × ${p.price} = ${getItemTotalPrice(p)})` :
+                                                `(${p.quantity || 1} × ${p.price} = ${getItemTotalPrice(p)})`
+                                            }
+                                        </small>
+                                    </div>
+                                    
+                                    <div className='d-flex align-items-center mb-2'>
+                                        <label className='me-2' style={{ fontWeight: 'bold', minWidth: '80px' }}>
+                                            {isRTL ? 'الكمية:' : 'Quantity:'}
+                                        </label>
+                                        <select 
+                                            className='form-select me-2' 
+                                            style={{ 
+                                                width: '150px',
+                                                borderRadius: '8px',
+                                                border: '2px solid #e9ecef',
+                                                fontSize: '0.9rem'
+                                            }}
+                                            value={getProductCount(p._id)}
+                                            onChange={(e) => {
+                                                const newQuantity = parseFloat(e.target.value);
+                                                if (!isNaN(newQuantity)) {
+                                                    updateProductQuantity(p._id, newQuantity);
+                                                }
+                                            }}
+                                        >
+                                            {getQuantityOptions().map(option => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    
                                     <div className='d-flex align-items-center'>
-                                        <button className='btn btn-danger me-2' onClick={() => removeCartItem(p._id)}>
-                                            <i className="fa fa-minus"></i>
-                                        </button>
-                                        <button className='btn btn-primary' onClick={() => addToCart(p)}>
-                                            <i className="fa fa-plus"></i>
+                                        <button className='btn btn-danger' onClick={() => removeCartItem(p._id)}>
+                                            <i className="fa fa-trash me-1"></i>
+                                            {isRTL ? 'حذف' : 'Remove'}
                                         </button>
                                     </div>
                                 </div>
