@@ -140,8 +140,15 @@ const CartPage = () => {
         try {
             const totalcash = getTotalPrice(); // Include delivery fees in the order total
 
+            // Create quantities array with productId and quantity for each unique product
+            const quantities = uniqueProducts.map(product => ({
+                productId: product._id,
+                quantity: getProductCount(product._id)
+            }));
+
             const { data } = await axios.post(`${backendUrl}/api/v1/order/create`, {
                 products: cart.map(item => item._id),
+                quantities: quantities,
                 totalcash,
                 deliveryFee: deliveryFee
             }, {

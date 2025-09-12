@@ -7,6 +7,20 @@ products:[
         ref:"products"
     }
 ],
+quantities:[
+    {
+        productId: {
+            type: mongoose.ObjectId,
+            ref: "products",
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 0
+        }
+    }
+],
 customer:{
         type:mongoose.ObjectId,
         ref:"users"

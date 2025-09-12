@@ -5,7 +5,25 @@ import categoryModel from '../models/categoryModel.js';
 // Create order
 export const createOrderController = async (req, res) => {
     try {
-        const { products, totalcash } = req.body;
+        const { products, quantities, totalcash } = req.body;
+
+        // Validate that products and quantities arrays have the same length
+        if (!quantities || !Array.isArray(quantities) || products.length !== quantities.length) {
+            return res.status(400).send({
+                success: false,
+                message: 'Products and quantities arrays must have the same length'
+            });
+        }
+
+        // Validate quantities array structure
+        for (const qty of quantities) {
+            if (!qty.productId || typeof qty.quantity !== 'number' || qty.quantity < 0) {
+                return res.status(400).send({
+                    success: false,
+                    message: 'Invalid quantity structure. Each quantity must have productId and quantity >= 0'
+                });
+            }
+        }
 
         // Get product details with categories to calculate delivery duration
         const productDetails = await productModel.find({ _id: { $in: products } }).populate('category');
@@ -30,6 +48,7 @@ export const createOrderController = async (req, res) => {
 
         const newOrder = new orderModel({
             products,
+            quantities,
             customer: req.user._id,
             totalcash,
             estimatedDeliveryDate,
@@ -62,6 +81,13 @@ export const getUserOrdersController = async (req, res) => {
                     model: 'category'
                 }
             })
+            .populate({
+                path: 'quantities.productId',
+                populate: {
+                    path: 'category',
+                    model: 'category'
+                }
+            })
             .sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
@@ -82,6 +108,13 @@ export const getAllOrdersController = async (req, res) => {
         const orders = await orderModel.find()
             .populate({
                 path: 'products',
+                populate: {
+                    path: 'category',
+                    model: 'category'
+                }
+            })
+            .populate({
+                path: 'quantities.productId',
                 populate: {
                     path: 'category',
                     model: 'category'
