@@ -125,26 +125,27 @@ const CartPage = () => {
         const existingProductIndex = newCart.findIndex(item => item._id === product._id);
         
         if (existingProductIndex !== -1) {
-            // If product exists, increase its quantity
+            // If product exists, increase its quantity by 1
+            const currentQuantity = newCart[existingProductIndex].quantity || 1;
             newCart[existingProductIndex] = {
                 ...newCart[existingProductIndex],
-                quantity: (newCart[existingProductIndex].quantity || 1) + 1
+                quantity: currentQuantity + 1
             };
-            console.log('Product exists, increasing quantity');
+            console.log('Product exists, increasing quantity from', currentQuantity, 'to', currentQuantity + 1);
         } else {
             // If product doesn't exist, add it with quantity 1
             newCart.push({
                 ...product,
                 quantity: 1
             });
-            console.log('New product added to cart');
+            console.log('New product added to cart with quantity 1');
         }
 
         console.log('New cart after adding:', newCart);
         setCart(newCart);
         
         try {
-            localStorage.setItem("cart", JSON.stringify(newCart));
+        localStorage.setItem("cart", JSON.stringify(newCart));
             console.log('Cart saved to localStorage successfully');
         } catch (error) {
             console.error('Error saving cart to localStorage:', error);
@@ -167,13 +168,20 @@ const CartPage = () => {
             { value: 2.5, label: isRTL ? 'كيلو ونصف' : '2.5 kg' },
             { value: 3, label: isRTL ? 'كيلو' : '3 kg' },
             { value: 4, label: isRTL ? 'كيلو' : '4 kg' },
-            { value: 5, label: isRTL ? 'كيلو' : '5 kg' }
+            { value: 5, label: isRTL ? 'كيلو' : '5 kg' },
+            { value: 6, label: isRTL ? 'كيلو' : '6 kg' },
+            { value: 7, label: isRTL ? 'كيلو' : '7 kg' },
+            { value: 8, label: isRTL ? 'كيلو' : '8 kg' },
+            { value: 9, label: isRTL ? 'كيلو' : '9 kg' },
+            { value: 10, label: isRTL ? 'كيلو' : '10 kg' }
         ];
     };
 
     // Update product quantity in cart
     const updateProductQuantity = (productId, newQuantity) => {
         try {
+            console.log(`Updating quantity for product ${productId} to ${newQuantity}`);
+            
             // Find the first instance of the product
             const productIndex = cart.findIndex(item => item._id === productId);
             
@@ -194,11 +202,13 @@ const CartPage = () => {
                     ...originalProduct,
                     quantity: newQuantity
                 });
+                console.log(`Updated product ${originalProduct.name} quantity to ${newQuantity}`);
             }
 
             setCart(newCart);
             try {
                 localStorage.setItem("cart", JSON.stringify(newCart));
+                console.log('Cart updated and saved to localStorage');
             } catch (error) {
                 console.error('Error saving cart to localStorage:', error);
             }
@@ -219,7 +229,7 @@ const CartPage = () => {
 
             setCart(newCart);
             try {
-                localStorage.setItem("cart", JSON.stringify(newCart));
+            localStorage.setItem("cart", JSON.stringify(newCart));
             } catch (error) {
                 console.error('Error saving cart to localStorage:', error);
             }
@@ -262,32 +272,34 @@ const CartPage = () => {
     };
 
     const getProductCount = (id) => {
-        // Find all instances of this product in the cart
-        const productInstances = cart.filter(item => item._id === id);
+        // Find the product in the cart
+        const product = cart.find(item => item._id === id);
         
-        if (productInstances.length === 0) {
+        if (!product) {
+            return 1; // Default quantity
+        }
+        
+        // Return the actual quantity value from the product
+        const quantity = product.quantity || 1;
+        
+        // Ensure quantity is a reasonable number
+        if (quantity > 10 || quantity < 0.1) {
+            console.log(`Invalid quantity ${quantity} for product ${id}, resetting to 1`);
             return 1;
         }
         
-        // If products have quantity property, sum them up
-        // Otherwise, count the number of instances
-        let totalQuantity = 0;
-        productInstances.forEach(item => {
-            if (item.quantity) {
-                totalQuantity += item.quantity;
-            } else {
-                totalQuantity += 1; // Each instance counts as 1
-            }
-        });
-        
-        return totalQuantity;
+        return quantity;
     };
 
     // Calculate total price for a specific product (price * quantity)
     const getItemTotalPrice = (product) => {
         const quantity = getProductCount(product._id);
-        const total = parseFloat(product.price) * parseFloat(quantity);
-        return Math.round(total * 100) / 100;
+        const unitPrice = parseFloat(product.price) || 0;
+        const total = unitPrice * quantity;
+        
+        console.log(`Price calculation for ${product.name}: ${unitPrice} × ${quantity} = ${total}`);
+        
+        return Math.round(total * 100) / 100; // Round to 2 decimal places
     };
 
     const uniqueProducts = [...new Map(cart.map(item => [item._id, item])).values()];
@@ -488,12 +500,12 @@ const CartPage = () => {
                                             {isRTL ? 'سعر الوحدة:' : 'Unit Price:'} {formatPrice(p.price)}
                                         </h5>
                                         <h3 className="text-primary">
-                                            {isRTL ? (
+                                      {isRTL ? (
                                                 <><b>{getItemTotalPrice(p)}</b> {currency}</>
-                                            ) : (
+                                      ) : (
                                                 <><b>{currency}</b> {getItemTotalPrice(p)}</>
-                                            )}
-                                        </h3>
+                                      )}
+                                    </h3>
                                         <small className="text-muted">
                                             {isRTL ? 
                                                 `(${getProductCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})` :
