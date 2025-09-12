@@ -22,6 +22,24 @@ const CartPage = () => {
 
         console.log('Original cart data:', cart);
 
+        // Check if cart has unreasonable data - if so, completely reset
+        const hasUnreasonableData = cart.some(item => {
+            const quantity = item.quantity || 1;
+            return quantity > 10 || quantity < 0.1 || !item._id || !item.price;
+        });
+
+        if (hasUnreasonableData) {
+            console.log('Detected unreasonable cart data - completely resetting cart');
+            setCart([]);
+            try {
+                localStorage.removeItem("cart");
+                console.log('Cart completely reset');
+            } catch (error) {
+                console.error('Error clearing localStorage:', error);
+            }
+            return;
+        }
+
         // Group products by ID and consolidate quantities
         const productMap = new Map();
         
@@ -56,10 +74,17 @@ const CartPage = () => {
         
         console.log('Cleaned cart data:', cleanedCart);
         
-        // Always update the cart to ensure clean data
+        // Update cart with error handling
         setCart(cleanedCart);
-        localStorage.setItem("cart", JSON.stringify(cleanedCart));
-        console.log('Cart cleaned and updated');
+        
+        try {
+            localStorage.setItem("cart", JSON.stringify(cleanedCart));
+            console.log('Cart cleaned and updated');
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+            // If localStorage fails, at least update the state
+            console.log('Cart updated in state only');
+        }
     };
 
     // Clean up cart on component mount
@@ -88,7 +113,11 @@ const CartPage = () => {
         }
 
         setCart(newCart);
-        localStorage.setItem("cart", JSON.stringify(newCart));
+        try {
+            localStorage.setItem("cart", JSON.stringify(newCart));
+        } catch (error) {
+            console.error('Error saving cart to localStorage:', error);
+        }
         toast.success(isRTL ? "تم إضافة العنصر إلى السلة بنجاح" : "Item added to cart successfully");
     };
 
@@ -136,7 +165,11 @@ const CartPage = () => {
             }
 
             setCart(newCart);
-            localStorage.setItem("cart", JSON.stringify(newCart));
+            try {
+                localStorage.setItem("cart", JSON.stringify(newCart));
+            } catch (error) {
+                console.error('Error saving cart to localStorage:', error);
+            }
             toast.success(isRTL ? "تم تحديث الكمية بنجاح" : "Quantity updated successfully");
         } catch (error) {
             console.error('Error updating quantity:', error);
@@ -153,7 +186,11 @@ const CartPage = () => {
             }
 
             setCart(newCart);
-            localStorage.setItem("cart", JSON.stringify(newCart));
+            try {
+                localStorage.setItem("cart", JSON.stringify(newCart));
+            } catch (error) {
+                console.error('Error saving cart to localStorage:', error);
+            }
             toast.success(isRTL ? "تم حذف العنصر من السلة بنجاح" : "Item removed successfully from your cart");
         } catch (error) {
             console.log(error);
@@ -366,7 +403,13 @@ const CartPage = () => {
                                     className='btn btn-danger btn-sm' 
                                     onClick={() => {
                                         setCart([]);
-                                        localStorage.removeItem("cart");
+                                        try {
+                                            localStorage.removeItem("cart");
+                                            localStorage.clear(); // Clear all localStorage
+                                            console.log('localStorage completely cleared');
+                                        } catch (error) {
+                                            console.error('Error clearing localStorage:', error);
+                                        }
                                         toast.success(isRTL ? "تم مسح السلة" : "Cart cleared");
                                     }}
                                     style={{ fontSize: '0.8rem' }}
