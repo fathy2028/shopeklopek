@@ -95,34 +95,30 @@ const CartPage = () => {
         }
     };
 
-    // Clean up cart on component mount
+    // Debug cart data on component mount
     useEffect(() => {
         console.log('CartPage mounted, cart data:', cart);
         console.log('Cart length:', cart.length);
         if (cart.length > 0) {
             console.log('First cart item:', cart[0]);
+            console.log('Cart items details:', cart.map(item => ({
+                id: item._id,
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            })));
+        } else {
+            console.log('Cart is empty');
         }
         
-        // Temporarily disable cleanup to test
-        // cleanupCart();
-        
-        // Only run cleanup if cart has problematic data
-        if (cart.length > 0) {
-            const hasProblematicData = cart.some(item => {
-                const quantity = item.quantity || 1;
-                return quantity > 1000 || quantity < 0.01 || !item._id || !item.price || isNaN(quantity);
-            });
-            
-            if (hasProblematicData) {
-                console.log('Running cleanup due to problematic data');
-                cleanupCart();
-            } else {
-                console.log('Cart data looks good, no cleanup needed');
-            }
-        }
+        // Disable automatic cleanup - let users add items normally
+        console.log('Cart page loaded - no automatic cleanup');
     }, []);
 
     const addToCart = (product) => {
+        console.log('Adding product to cart:', product);
+        console.log('Current cart before adding:', cart);
+        
         let newCart = [...cart];
         
         // Check if product already exists in cart
@@ -134,20 +130,26 @@ const CartPage = () => {
                 ...newCart[existingProductIndex],
                 quantity: (newCart[existingProductIndex].quantity || 1) + 1
             };
+            console.log('Product exists, increasing quantity');
         } else {
             // If product doesn't exist, add it with quantity 1
             newCart.push({
                 ...product,
                 quantity: 1
             });
+            console.log('New product added to cart');
         }
 
+        console.log('New cart after adding:', newCart);
         setCart(newCart);
+        
         try {
             localStorage.setItem("cart", JSON.stringify(newCart));
+            console.log('Cart saved to localStorage successfully');
         } catch (error) {
             console.error('Error saving cart to localStorage:', error);
         }
+        
         toast.success(isRTL ? "تم إضافة العنصر إلى السلة بنجاح" : "Item added to cart successfully");
     };
 
@@ -420,34 +422,48 @@ const CartPage = () => {
                                 t('cart.emptyCart')
                             }
                         </h4>
-                        {cart?.length > 0 && (
-                            <div className='text-center mb-3'>
-                                <button 
-                                    className='btn btn-warning btn-sm me-2' 
-                                    onClick={cleanupCart}
-                                    style={{ fontSize: '0.8rem' }}
-                                >
-                                    {isRTL ? 'إصلاح الكميات' : 'Fix Quantities'}
-                                </button>
-                                <button 
-                                    className='btn btn-danger btn-sm' 
-                                    onClick={() => {
-                                        setCart([]);
-                                        try {
-                                            localStorage.removeItem("cart");
-                                            localStorage.clear(); // Clear all localStorage
-                                            console.log('localStorage completely cleared');
-                                        } catch (error) {
-                                            console.error('Error clearing localStorage:', error);
-                                        }
-                                        toast.success(isRTL ? "تم مسح السلة" : "Cart cleared");
-                                    }}
-                                    style={{ fontSize: '0.8rem' }}
-                                >
-                                    {isRTL ? 'مسح السلة' : 'Clear Cart'}
-                                </button>
-                            </div>
-                        )}
+                        <div className='text-center mb-3'>
+                            <button 
+                                className='btn btn-info btn-sm me-2' 
+                                onClick={() => {
+                                    console.log('Current cart state:', cart);
+                                    console.log('Cart length:', cart.length);
+                                    console.log('localStorage cart:', localStorage.getItem("cart"));
+                                    toast.info(`Cart has ${cart.length} items`);
+                                }}
+                                style={{ fontSize: '0.8rem' }}
+                            >
+                                {isRTL ? 'فحص السلة' : 'Debug Cart'}
+                            </button>
+                            {cart?.length > 0 && (
+                                <>
+                                    <button 
+                                        className='btn btn-warning btn-sm me-2' 
+                                        onClick={cleanupCart}
+                                        style={{ fontSize: '0.8rem' }}
+                                    >
+                                        {isRTL ? 'إصلاح الكميات' : 'Fix Quantities'}
+                                    </button>
+                                    <button 
+                                        className='btn btn-danger btn-sm' 
+                                        onClick={() => {
+                                            setCart([]);
+                                            try {
+                                                localStorage.removeItem("cart");
+                                                localStorage.clear(); // Clear all localStorage
+                                                console.log('localStorage completely cleared');
+                                            } catch (error) {
+                                                console.error('Error clearing localStorage:', error);
+                                            }
+                                            toast.success(isRTL ? "تم مسح السلة" : "Cart cleared");
+                                        }}
+                                        style={{ fontSize: '0.8rem' }}
+                                    >
+                                        {isRTL ? 'مسح السلة' : 'Clear Cart'}
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className='row'>
