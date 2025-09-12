@@ -107,12 +107,32 @@ const CartPage = () => {
                 quantity: item.quantity,
                 price: item.price
             })));
+            
+            // Check for problematic quantities and fix them
+            let needsUpdate = false;
+            const updatedCart = cart.map(item => {
+                if (item.quantity > 10 || item.quantity < 0.1) {
+                    console.log(`Fixing problematic quantity ${item.quantity} for ${item.name}, setting to 1`);
+                    needsUpdate = true;
+                    return { ...item, quantity: 1 };
+                }
+                return item;
+            });
+            
+            if (needsUpdate) {
+                console.log('Updating cart with fixed quantities');
+                setCart(updatedCart);
+                try {
+                    localStorage.setItem("cart", JSON.stringify(updatedCart));
+                } catch (error) {
+                    console.error('Error saving fixed cart to localStorage:', error);
+                }
+            }
         } else {
             console.log('Cart is empty');
         }
         
-        // Disable automatic cleanup - let users add items normally
-        console.log('Cart page loaded - no automatic cleanup');
+        console.log('Cart page loaded - checking for quantity issues');
     }, []);
 
     const addToCart = (product) => {
@@ -246,12 +266,18 @@ const CartPage = () => {
         try {
             let total = 0;
             cart?.forEach(item => { 
-                const quantity = item.quantity || 1;
-                total += item.price * quantity; 
+                const quantity = getProductCount(item._id);
+                const unitPrice = parseFloat(item.price) || 0;
+                const itemTotal = unitPrice * quantity;
+                total += itemTotal;
+                
+                console.log(`Subtotal calculation for ${item.name}: ${unitPrice} × ${quantity} = ${itemTotal}`);
             });
+            
+            console.log(`Total subtotal: ${total}`);
             return Math.round(total * 100) / 100; // Round to 2 decimal places
         } catch (error) {
-            console.log(error);
+            console.log('Error calculating subtotal:', error);
             return 0;
         }
     };
@@ -260,9 +286,11 @@ const CartPage = () => {
         try {
             const subtotal = getSubtotal();
             const total = subtotal + (cart.length > 0 ? deliveryFee : 0);
+            
+            console.log(`Total price calculation: ${subtotal} + ${deliveryFee} = ${total}`);
             return Math.round(total * 100) / 100; // Round to 2 decimal places
         } catch (error) {
-            console.log(error);
+            console.log('Error calculating total price:', error);
             return 0;
         }
     };
