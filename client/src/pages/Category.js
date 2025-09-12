@@ -152,7 +152,7 @@ const Category = () => {
                                 </div>
                             </div>
                         ) : (
-                            /* Products Grid */
+                            
                             <div className='row'>
                                 {products.length > 0 ? (
                                     products.map(product => (
