@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Mylayout from './../components/Layout/Mylayout';
 import { useCart } from '../context/cart';
 import { useAuth } from '../context/auth';
@@ -16,9 +16,65 @@ const CartPage = () => {
     const isRTL = i18n.language === 'ar';
     const currency = i18n.language === 'ar' ? 'جنية' : 'EGP';
 
+    // Clean up cart data and convert to new structure
+    const cleanupCart = () => {
+        if (cart.length === 0) return;
+
+        // Group products by ID and consolidate quantities
+        const productMap = new Map();
+        
+        cart.forEach(item => {
+            const id = item._id;
+            if (productMap.has(id)) {
+                // If product already exists, add to its quantity
+                const existing = productMap.get(id);
+                productMap.set(id, {
+                    ...existing,
+                    quantity: (existing.quantity || 1) + (item.quantity || 1)
+                });
+            } else {
+                // New product, add with its quantity
+                productMap.set(id, {
+                    ...item,
+                    quantity: item.quantity || 1
+                });
+            }
+        });
+        
+        // Convert back to array
+        const cleanedCart = Array.from(productMap.values());
+        
+        if (cleanedCart.length !== cart.length) {
+            console.log('Cleaning cart data - converting duplicates to quantities');
+            setCart(cleanedCart);
+            localStorage.setItem("cart", JSON.stringify(cleanedCart));
+        }
+    };
+
+    // Clean up cart on component mount
+    useEffect(() => {
+        cleanupCart();
+    }, []);
+
     const addToCart = (product) => {
         let newCart = [...cart];
-        newCart.push(product);
+        
+        // Check if product already exists in cart
+        const existingProductIndex = newCart.findIndex(item => item._id === product._id);
+        
+        if (existingProductIndex !== -1) {
+            // If product exists, increase its quantity
+            newCart[existingProductIndex] = {
+                ...newCart[existingProductIndex],
+                quantity: (newCart[existingProductIndex].quantity || 1) + 1
+            };
+        } else {
+            // If product doesn't exist, add it with quantity 1
+            newCart.push({
+                ...product,
+                quantity: 1
+            });
+        }
 
         setCart(newCart);
         localStorage.setItem("cart", JSON.stringify(newCart));
@@ -46,7 +102,7 @@ const CartPage = () => {
     // Update product quantity in cart
     const updateProductQuantity = (productId, newQuantity) => {
         try {
-            // Find the product in cart
+            // Find the first instance of the product
             const productIndex = cart.findIndex(item => item._id === productId);
             
             if (productIndex === -1) {
@@ -54,12 +110,19 @@ const CartPage = () => {
                 return;
             }
 
-            // Create new cart with updated quantity
-            let newCart = [...cart];
-            newCart[productIndex] = {
-                ...newCart[productIndex],
-                quantity: newQuantity
-            };
+            // Get the original product data
+            const originalProduct = cart[productIndex];
+
+            // Create new cart without this product
+            let newCart = cart.filter(item => item._id !== productId);
+            
+            // Add the product back with new quantity if quantity > 0
+            if (newQuantity > 0) {
+                newCart.push({
+                    ...originalProduct,
+                    quantity: newQuantity
+                });
+            }
 
             setCart(newCart);
             localStorage.setItem("cart", JSON.stringify(newCart));
@@ -119,13 +182,30 @@ const CartPage = () => {
     };
 
     const getProductCount = (id) => {
-        const product = cart.find(item => item._id === id);
-        return product ? (product.quantity || 1) : 1;
+        // Find all instances of this product in the cart
+        const productInstances = cart.filter(item => item._id === id);
+        
+        if (productInstances.length === 0) {
+            return 1;
+        }
+        
+        // If products have quantity property, sum them up
+        // Otherwise, count the number of instances
+        let totalQuantity = 0;
+        productInstances.forEach(item => {
+            if (item.quantity) {
+                totalQuantity += item.quantity;
+            } else {
+                totalQuantity += 1; // Each instance counts as 1
+            }
+        });
+        
+        return totalQuantity;
     };
 
     // Calculate total price for a specific product (price * quantity)
     const getItemTotalPrice = (product) => {
-        const quantity = product.quantity || 1;
+        const quantity = getProductCount(product._id);
         const total = parseFloat(product.price) * parseFloat(quantity);
         return Math.round(total * 100) / 100;
     };
