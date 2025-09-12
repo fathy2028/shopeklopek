@@ -22,14 +22,15 @@ const CartPage = () => {
 
         console.log('Original cart data:', cart);
 
-        // Check if cart has unreasonable data - if so, completely reset
-        const hasUnreasonableData = cart.some(item => {
+        // Check if cart has extremely unreasonable data - only reset if truly problematic
+        const hasExtremelyUnreasonableData = cart.some(item => {
             const quantity = item.quantity || 1;
-            return quantity > 10 || quantity < 0.1 || !item._id || !item.price;
+            return quantity > 1000 || quantity < 0.01 || !item._id || !item.price || isNaN(quantity);
         });
 
-        if (hasUnreasonableData) {
-            console.log('Detected unreasonable cart data - completely resetting cart');
+        if (hasExtremelyUnreasonableData) {
+            console.log('Detected extremely unreasonable cart data - completely resetting cart');
+            console.log('Cart before reset:', cart);
             setCart([]);
             try {
                 localStorage.removeItem("cart");
@@ -47,8 +48,8 @@ const CartPage = () => {
             const id = item._id;
             let quantity = item.quantity || 1;
             
-            // Force reset any unreasonable quantities to 1
-            if (quantity > 10 || quantity < 0.1) {
+            // Only reset truly unreasonable quantities, be more lenient
+            if (quantity > 100 || quantity < 0.01) {
                 console.log(`Resetting unreasonable quantity ${quantity} to 1 for product ${id}`);
                 quantity = 1;
             }
@@ -58,7 +59,7 @@ const CartPage = () => {
                 const existing = productMap.get(id);
                 productMap.set(id, {
                     ...existing,
-                    quantity: Math.min((existing.quantity || 1) + quantity, 10) // Cap at 10
+                    quantity: Math.min((existing.quantity || 1) + quantity, 50) // Cap at 50, more reasonable
                 });
             } else {
                 // New product, add with its quantity
@@ -74,22 +75,51 @@ const CartPage = () => {
         
         console.log('Cleaned cart data:', cleanedCart);
         
-        // Update cart with error handling
-        setCart(cleanedCart);
-        
-        try {
-            localStorage.setItem("cart", JSON.stringify(cleanedCart));
-            console.log('Cart cleaned and updated');
-        } catch (error) {
-            console.error('Error saving to localStorage:', error);
-            // If localStorage fails, at least update the state
-            console.log('Cart updated in state only');
+        // Only update if there's actually a change
+        if (cleanedCart.length !== cart.length || 
+            cleanedCart.some((item, index) => item.quantity !== (cart[index]?.quantity || 1))) {
+            
+            // Update cart with error handling
+            setCart(cleanedCart);
+            
+            try {
+                localStorage.setItem("cart", JSON.stringify(cleanedCart));
+                console.log('Cart cleaned and updated');
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                // If localStorage fails, at least update the state
+                console.log('Cart updated in state only');
+            }
+        } else {
+            console.log('No cleanup needed - cart data is already clean');
         }
     };
 
     // Clean up cart on component mount
     useEffect(() => {
-        cleanupCart();
+        console.log('CartPage mounted, cart data:', cart);
+        console.log('Cart length:', cart.length);
+        if (cart.length > 0) {
+            console.log('First cart item:', cart[0]);
+        }
+        
+        // Temporarily disable cleanup to test
+        // cleanupCart();
+        
+        // Only run cleanup if cart has problematic data
+        if (cart.length > 0) {
+            const hasProblematicData = cart.some(item => {
+                const quantity = item.quantity || 1;
+                return quantity > 1000 || quantity < 0.01 || !item._id || !item.price || isNaN(quantity);
+            });
+            
+            if (hasProblematicData) {
+                console.log('Running cleanup due to problematic data');
+                cleanupCart();
+            } else {
+                console.log('Cart data looks good, no cleanup needed');
+            }
+        }
     }, []);
 
     const addToCart = (product) => {
