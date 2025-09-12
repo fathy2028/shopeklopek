@@ -111,12 +111,32 @@ const CartPage = () => {
             // Check for problematic quantities and fix them
             let needsUpdate = false;
             const updatedCart = cart.map(item => {
-                if (item.quantity > 10 || item.quantity < 0.1) {
-                    console.log(`Fixing problematic quantity ${item.quantity} for ${item.name}, setting to 1`);
+                let updatedItem = { ...item };
+                
+                // Fix itemCount if problematic
+                if (item.itemCount > 10 || item.itemCount < 1) {
+                    console.log(`Fixing problematic itemCount ${item.itemCount} for ${item.name}, setting to 1`);
+                    updatedItem.itemCount = 1;
                     needsUpdate = true;
-                    return { ...item, quantity: 1 };
                 }
-                return item;
+                
+                // Fix kilogramQuantity if problematic
+                if (item.kilogramQuantity > 10 || item.kilogramQuantity < 0.1) {
+                    console.log(`Fixing problematic kilogramQuantity ${item.kilogramQuantity} for ${item.name}, setting to 1`);
+                    updatedItem.kilogramQuantity = 1;
+                    needsUpdate = true;
+                }
+                
+                // Migrate old quantity field to new structure
+                if (item.quantity && !item.itemCount && !item.kilogramQuantity) {
+                    console.log(`Migrating old quantity ${item.quantity} for ${item.name} to new structure`);
+                    updatedItem.itemCount = 1;
+                    updatedItem.kilogramQuantity = item.quantity;
+                    delete updatedItem.quantity;
+                    needsUpdate = true;
+                }
+                
+                return updatedItem;
             });
             
             if (needsUpdate) {
@@ -145,20 +165,21 @@ const CartPage = () => {
         const existingProductIndex = newCart.findIndex(item => item._id === product._id);
         
         if (existingProductIndex !== -1) {
-            // If product exists, increase its quantity by 1
-            const currentQuantity = newCart[existingProductIndex].quantity || 1;
+            // If product exists, increase item count by 1
+            const currentItemCount = newCart[existingProductIndex].itemCount || 1;
             newCart[existingProductIndex] = {
                 ...newCart[existingProductIndex],
-                quantity: currentQuantity + 1
+                itemCount: currentItemCount + 1
             };
-            console.log('Product exists, increasing quantity from', currentQuantity, 'to', currentQuantity + 1);
+            console.log('Product exists, increasing item count from', currentItemCount, 'to', currentItemCount + 1);
         } else {
-            // If product doesn't exist, add it with quantity 1
+            // If product doesn't exist, add it with item count 1 and default kilogram quantity 1
             newCart.push({
                 ...product,
-                quantity: 1
+                itemCount: 1,
+                kilogramQuantity: 1
             });
-            console.log('New product added to cart with quantity 1');
+            console.log('New product added to cart with item count 1 and kilogram quantity 1');
         }
 
         console.log('New cart after adding:', newCart);
@@ -197,44 +218,114 @@ const CartPage = () => {
         ];
     };
 
-    // Update product quantity in cart
-    const updateProductQuantity = (productId, newQuantity) => {
+    // Update kilogram quantity in cart
+    const updateKilogramQuantity = (productId, newKilogramQuantity) => {
         try {
-            console.log(`Updating quantity for product ${productId} to ${newQuantity}`);
-            
-            // Find the first instance of the product
+            console.log(`Updating kilogram quantity for product ${productId} to ${newKilogramQuantity}`);
             const productIndex = cart.findIndex(item => item._id === productId);
-            
             if (productIndex === -1) {
                 console.error('Product not found in cart');
                 return;
             }
-
-            // Get the original product data
-            const originalProduct = cart[productIndex];
-
-            // Create new cart without this product
-            let newCart = cart.filter(item => item._id !== productId);
             
-            // Add the product back with new quantity if quantity > 0
-            if (newQuantity > 0) {
-                newCart.push({
-                    ...originalProduct,
-                    quantity: newQuantity
-                });
-                console.log(`Updated product ${originalProduct.name} quantity to ${newQuantity}`);
-            }
-
-            setCart(newCart);
+            const updatedCart = cart.map(item => 
+                item._id === productId 
+                    ? { ...item, kilogramQuantity: newKilogramQuantity }
+                    : item
+            );
+            
+            setCart(updatedCart);
+            
             try {
-                localStorage.setItem("cart", JSON.stringify(newCart));
-                console.log('Cart updated and saved to localStorage');
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+                console.log('Kilogram quantity updated and saved to localStorage');
             } catch (error) {
                 console.error('Error saving cart to localStorage:', error);
             }
-            toast.success(isRTL ? "تم تحديث الكمية بنجاح" : "Quantity updated successfully");
+            
+            toast.success(isRTL ? "تم تحديث كمية الكيلو بنجاح" : "Kilogram quantity updated successfully");
         } catch (error) {
-            console.error('Error updating quantity:', error);
+            console.error('Error updating kilogram quantity:', error);
+        }
+    };
+
+    // Increment item count
+    const incrementItemCount = (productId) => {
+        try {
+            console.log(`Incrementing item count for product ${productId}`);
+            const productIndex = cart.findIndex(item => item._id === productId);
+            if (productIndex === -1) {
+                console.error('Product not found in cart');
+                return;
+            }
+            
+            const updatedCart = cart.map(item => 
+                item._id === productId 
+                    ? { ...item, itemCount: (item.itemCount || 1) + 1 }
+                    : item
+            );
+            
+            setCart(updatedCart);
+            
+            try {
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+                console.log('Item count incremented and saved to localStorage');
+            } catch (error) {
+                console.error('Error saving cart to localStorage:', error);
+            }
+            
+            toast.success(isRTL ? "تم زيادة الكمية بنجاح" : "Quantity increased successfully");
+        } catch (error) {
+            console.error('Error incrementing item count:', error);
+        }
+    };
+
+    // Decrement item count
+    const decrementItemCount = (productId) => {
+        try {
+            console.log(`Decrementing item count for product ${productId}`);
+            const productIndex = cart.findIndex(item => item._id === productId);
+            if (productIndex === -1) {
+                console.error('Product not found in cart');
+                return;
+            }
+            
+            const currentItemCount = cart[productIndex].itemCount || 1;
+            
+            if (currentItemCount <= 1) {
+                // Remove item completely if count is 1 or less
+                const updatedCart = cart.filter(item => item._id !== productId);
+                setCart(updatedCart);
+                
+                try {
+                    localStorage.setItem("cart", JSON.stringify(updatedCart));
+                    console.log('Item removed from cart');
+                } catch (error) {
+                    console.error('Error saving cart to localStorage:', error);
+                }
+                
+                toast.success(isRTL ? "تم حذف العنصر من السلة" : "Item removed from cart");
+            } else {
+                // Decrease item count by 1
+                const updatedCart = cart.map(item => 
+                    item._id === productId 
+                        ? { ...item, itemCount: currentItemCount - 1 }
+                        : item
+                );
+                
+                setCart(updatedCart);
+                
+                try {
+                    localStorage.setItem("cart", JSON.stringify(updatedCart));
+                    console.log('Item count decremented and saved to localStorage');
+                } catch (error) {
+                    console.error('Error saving cart to localStorage:', error);
+                }
+                
+                toast.success(isRTL ? "تم تقليل الكمية بنجاح" : "Quantity decreased successfully");
+            }
+        } catch (error) {
+            console.error('Error decrementing item count:', error);
         }
     };
 
@@ -266,12 +357,13 @@ const CartPage = () => {
         try {
             let total = 0;
             cart?.forEach(item => { 
-                const quantity = getProductCount(item._id);
+                const kilogramQuantity = getKilogramQuantity(item._id);
+                const itemCount = getItemCount(item._id);
                 const unitPrice = parseFloat(item.price) || 0;
-                const itemTotal = unitPrice * quantity;
+                const itemTotal = unitPrice * kilogramQuantity * itemCount;
                 total += itemTotal;
                 
-                console.log(`Subtotal calculation for ${item.name}: ${unitPrice} × ${quantity} = ${itemTotal}`);
+                console.log(`Subtotal calculation for ${item.name}: ${unitPrice} × ${kilogramQuantity} × ${itemCount} = ${itemTotal}`);
             });
             
             console.log(`Total subtotal: ${total}`);
@@ -299,33 +391,40 @@ const CartPage = () => {
         return isRTL ? `${price} ${currency}` : `${currency} ${price}`;
     };
 
-    const getProductCount = (id) => {
-        // Find the product in the cart
+    const getItemCount = (id) => {
         const product = cart.find(item => item._id === id);
-        
         if (!product) {
-            return 1; // Default quantity
+            return 1; // Default item count
         }
-        
-        // Return the actual quantity value from the product
-        const quantity = product.quantity || 1;
-        
-        // Ensure quantity is a reasonable number
-        if (quantity > 10 || quantity < 0.1) {
-            console.log(`Invalid quantity ${quantity} for product ${id}, resetting to 1`);
+        const itemCount = product.itemCount || 1;
+        if (itemCount > 10 || itemCount < 1) {
+            console.log(`Invalid item count ${itemCount} for product ${id}, resetting to 1`);
             return 1;
         }
-        
-        return quantity;
+        return itemCount;
     };
 
-    // Calculate total price for a specific product (price * quantity)
+    const getKilogramQuantity = (id) => {
+        const product = cart.find(item => item._id === id);
+        if (!product) {
+            return 1; // Default kilogram quantity
+        }
+        const kilogramQuantity = product.kilogramQuantity || 1;
+        if (kilogramQuantity > 10 || kilogramQuantity < 0.1) {
+            console.log(`Invalid kilogram quantity ${kilogramQuantity} for product ${id}, resetting to 1`);
+            return 1;
+        }
+        return kilogramQuantity;
+    };
+
+    // Calculate total price for a specific product (price * kilogramQuantity * itemCount)
     const getItemTotalPrice = (product) => {
-        const quantity = getProductCount(product._id);
+        const kilogramQuantity = getKilogramQuantity(product._id);
+        const itemCount = getItemCount(product._id);
         const unitPrice = parseFloat(product.price) || 0;
-        const total = unitPrice * quantity;
+        const total = unitPrice * kilogramQuantity * itemCount;
         
-        console.log(`Price calculation for ${product.name}: ${unitPrice} × ${quantity} = ${total}`);
+        console.log(`Price calculation for ${product.name}: ${unitPrice} × ${kilogramQuantity} × ${itemCount} = ${total}`);
         
         return Math.round(total * 100) / 100; // Round to 2 decimal places
     };
@@ -398,7 +497,7 @@ const CartPage = () => {
             // Create quantities array with productId and quantity for each unique product
             const quantities = uniqueProducts.map(product => ({
                 productId: product._id,
-                quantity: getProductCount(product._id)
+                quantity: getKilogramQuantity(product._id) * getItemCount(product._id)
             }));
 
             const orderData = {
@@ -536,8 +635,8 @@ const CartPage = () => {
                                     </h3>
                                         <small className="text-muted">
                                             {isRTL ? 
-                                                `(${getProductCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})` :
-                                                `(${getProductCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})`
+                                                `(${getKilogramQuantity(p._id)} كيلو × ${getItemCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})` :
+                                                `(${getKilogramQuantity(p._id)} kg × ${getItemCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})`
                                             }
                                         </small>
                                     </div>
@@ -554,11 +653,11 @@ const CartPage = () => {
                                                 border: '2px solid #e9ecef',
                                                 fontSize: '0.9rem'
                                             }}
-                                            value={getProductCount(p._id)}
+                                            value={getKilogramQuantity(p._id)}
                                             onChange={(e) => {
-                                                const newQuantity = parseFloat(e.target.value);
-                                                if (!isNaN(newQuantity)) {
-                                                    updateProductQuantity(p._id, newQuantity);
+                                                const newKilogramQuantity = parseFloat(e.target.value);
+                                                if (!isNaN(newKilogramQuantity)) {
+                                                    updateKilogramQuantity(p._id, newKilogramQuantity);
                                                 }
                                             }}
                                         >
@@ -569,12 +668,52 @@ const CartPage = () => {
                                             ))}
                                         </select>
                                     </div>
-                                    
-                                    <div className='d-flex align-items-center'>
-                                        <button className='btn btn-danger' onClick={() => removeCartItem(p._id)}>
-                                            <i className="fa fa-trash me-1"></i>
-                                            {isRTL ? 'حذف' : 'Remove'}
-                                        </button>
+
+                                    <div className='d-flex align-items-center mb-2'>
+                                        <label className='me-2' style={{ fontWeight: 'bold', minWidth: '80px' }}>
+                                            {isRTL ? 'العدد:' : 'Count:'}
+                                        </label>
+                                        <div className='d-flex align-items-center'>
+                                            <button 
+                                                className='btn btn-outline-secondary btn-sm me-2' 
+                                                onClick={() => decrementItemCount(p._id)}
+                                                style={{ 
+                                                    width: '35px', 
+                                                    height: '35px', 
+                                                    borderRadius: '50%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <i className="fa fa-minus"></i>
+                                            </button>
+                                            <span 
+                                                className='mx-2' 
+                                                style={{ 
+                                                    minWidth: '30px', 
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '1.1rem'
+                                                }}
+                                            >
+                                                {getItemCount(p._id)}
+                                            </span>
+                                            <button 
+                                                className='btn btn-outline-secondary btn-sm' 
+                                                onClick={() => incrementItemCount(p._id)}
+                                                style={{ 
+                                                    width: '35px', 
+                                                    height: '35px', 
+                                                    borderRadius: '50%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <i className="fa fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
