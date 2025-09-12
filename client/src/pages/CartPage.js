@@ -146,12 +146,19 @@ const CartPage = () => {
                 quantity: getProductCount(product._id)
             }));
 
-            const { data } = await axios.post(`${backendUrl}/api/v1/order/create`, {
+            const orderData = {
                 products: cart.map(item => item._id),
                 quantities: quantities,
                 totalcash,
                 deliveryFee: deliveryFee
-            }, {
+            };
+
+            console.log('Order data being sent:', orderData);
+            console.log('Cart:', cart);
+            console.log('Unique products:', uniqueProducts);
+            console.log('Quantities:', quantities);
+
+            const { data } = await axios.post(`${backendUrl}/api/v1/order/create`, orderData, {
                 headers: {
                     Authorization: auth.token
                 }
@@ -166,8 +173,12 @@ const CartPage = () => {
                 toast.error(isRTL ? "فشل في تأكيد الطلب" : data.message);
             }
         } catch (error) {
-            console.log(error);
-            toast.error(isRTL ? "فشل في تأكيد الطلب" : "Failed to place the order");
+            console.log('Order creation error:', error);
+            console.log('Error response:', error.response?.data);
+            console.log('Error status:', error.response?.status);
+            
+            const errorMessage = error.response?.data?.message || "Failed to place the order";
+            toast.error(isRTL ? "فشل في تأكيد الطلب" : errorMessage);
         }
     };
 

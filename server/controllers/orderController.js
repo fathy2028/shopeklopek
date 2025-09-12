@@ -7,20 +7,34 @@ export const createOrderController = async (req, res) => {
     try {
         const { products, quantities, totalcash } = req.body;
 
-        // Validate that products and quantities arrays have the same length
-        if (!quantities || !Array.isArray(quantities) || products.length !== quantities.length) {
+        console.log('Order creation request received:');
+        console.log('Products:', products);
+        console.log('Quantities:', quantities);
+        console.log('Total cash:', totalcash);
+
+        // Validate that quantities array exists and is valid
+        if (!quantities || !Array.isArray(quantities)) {
+            console.log('Validation failed: Quantities array is missing or invalid');
             return res.status(400).send({
                 success: false,
-                message: 'Products and quantities arrays must have the same length'
+                message: 'Quantities array is required and must be an array'
             });
         }
 
         // Validate quantities array structure
-        for (const qty of quantities) {
+        for (let i = 0; i < quantities.length; i++) {
+            const qty = quantities[i];
+            console.log(`Validating quantity ${i}:`, qty);
+            
             if (!qty.productId || typeof qty.quantity !== 'number' || qty.quantity < 0) {
+                console.log(`Validation failed for quantity ${i}:`, {
+                    hasProductId: !!qty.productId,
+                    quantityType: typeof qty.quantity,
+                    quantityValue: qty.quantity
+                });
                 return res.status(400).send({
                     success: false,
-                    message: 'Invalid quantity structure. Each quantity must have productId and quantity >= 0'
+                    message: `Invalid quantity structure at index ${i}. Each quantity must have productId and quantity >= 0`
                 });
             }
         }
