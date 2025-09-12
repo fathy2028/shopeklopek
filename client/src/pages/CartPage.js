@@ -20,23 +20,33 @@ const CartPage = () => {
     const cleanupCart = () => {
         if (cart.length === 0) return;
 
+        console.log('Original cart data:', cart);
+
         // Group products by ID and consolidate quantities
         const productMap = new Map();
         
         cart.forEach(item => {
             const id = item._id;
+            let quantity = item.quantity || 1;
+            
+            // Force reset any unreasonable quantities to 1
+            if (quantity > 10 || quantity < 0.1) {
+                console.log(`Resetting unreasonable quantity ${quantity} to 1 for product ${id}`);
+                quantity = 1;
+            }
+            
             if (productMap.has(id)) {
                 // If product already exists, add to its quantity
                 const existing = productMap.get(id);
                 productMap.set(id, {
                     ...existing,
-                    quantity: (existing.quantity || 1) + (item.quantity || 1)
+                    quantity: Math.min((existing.quantity || 1) + quantity, 10) // Cap at 10
                 });
             } else {
                 // New product, add with its quantity
                 productMap.set(id, {
                     ...item,
-                    quantity: item.quantity || 1
+                    quantity: quantity
                 });
             }
         });
@@ -44,11 +54,12 @@ const CartPage = () => {
         // Convert back to array
         const cleanedCart = Array.from(productMap.values());
         
-        if (cleanedCart.length !== cart.length) {
-            console.log('Cleaning cart data - converting duplicates to quantities');
-            setCart(cleanedCart);
-            localStorage.setItem("cart", JSON.stringify(cleanedCart));
-        }
+        console.log('Cleaned cart data:', cleanedCart);
+        
+        // Always update the cart to ensure clean data
+        setCart(cleanedCart);
+        localStorage.setItem("cart", JSON.stringify(cleanedCart));
+        console.log('Cart cleaned and updated');
     };
 
     // Clean up cart on component mount
@@ -342,6 +353,28 @@ const CartPage = () => {
                                 t('cart.emptyCart')
                             }
                         </h4>
+                        {cart?.length > 0 && (
+                            <div className='text-center mb-3'>
+                                <button 
+                                    className='btn btn-warning btn-sm me-2' 
+                                    onClick={cleanupCart}
+                                    style={{ fontSize: '0.8rem' }}
+                                >
+                                    {isRTL ? 'إصلاح الكميات' : 'Fix Quantities'}
+                                </button>
+                                <button 
+                                    className='btn btn-danger btn-sm' 
+                                    onClick={() => {
+                                        setCart([]);
+                                        localStorage.removeItem("cart");
+                                        toast.success(isRTL ? "تم مسح السلة" : "Cart cleared");
+                                    }}
+                                    style={{ fontSize: '0.8rem' }}
+                                >
+                                    {isRTL ? 'مسح السلة' : 'Clear Cart'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className='row'>
@@ -374,8 +407,8 @@ const CartPage = () => {
                                         </h3>
                                         <small className="text-muted">
                                             {isRTL ? 
-                                                `(${p.quantity || 1} × ${p.price} = ${getItemTotalPrice(p)})` :
-                                                `(${p.quantity || 1} × ${p.price} = ${getItemTotalPrice(p)})`
+                                                `(${getProductCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})` :
+                                                `(${getProductCount(p._id)} × ${p.price} = ${getItemTotalPrice(p)})`
                                             }
                                         </small>
                                     </div>
